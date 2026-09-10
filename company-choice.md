@@ -12,7 +12,7 @@ He elegido TrackFlow porque es la empresa que más conecta con mi experiencia pr
 
 Me gustaría automatizar de principio a fin la detección y gestión de problemas que puedan afectar al cumplimiento con los clientes. Esto incluye anticipar problemas de stock, detectar discrepancias de inventario, controlar incidencias relacionadas con el estado de los productos y detectar posibles retrasos o problemas en las entregas. El objetivo sería actuar antes de que estos problemas provoquen reclamaciones, devoluciones o incumplimientos con los clientes.
 
-## Mi idea de Agente de IA
+## My AI Agent Idea — Mi idea de Agente de IA
 
 Crearía un agente de IA que supervise de forma continua el inventario, los pedidos, las devoluciones y las entregas. El agente podría anticipar problemas de stock, detectar discrepancias de inventario, identificar incidencias relacionadas con el estado de los productos y detectar posibles retrasos en las entregas.
 
