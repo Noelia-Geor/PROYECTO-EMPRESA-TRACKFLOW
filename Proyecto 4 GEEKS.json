@@ -1,0 +1,1008 @@
+{
+  "name": "Proyecto 4 GEEKS",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "nutrition-check",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -608,
+        0
+      ],
+      "id": "0f1473f8-6267-432d-b1b4-e6e366ed792f",
+      "name": "Webhook",
+      "webhookId": "26a0d480-1ea3-4651-a5ec-2fcb70a22596"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7ab207b0-b0f9-4d64-a234-a91ac8766c7b",
+              "leftValue": "={{ !$json.body || Object.keys($json.body).length === 0 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -384,
+        0
+      ],
+      "id": "4cb4d4ba-0dc5-4788-bcbb-666677733c19",
+      "name": "Validar - Solicitud vacía"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"service\": \"SnackCheck\",\n  \"description\": \"Analiza si un snack es saludable mediante su código de barras.\",\n  \"required\": {\n    \"barcode\": \"Código de barras numérico\"\n  },\n  \"example\": {\n    \"barcode\": \"3017620422003\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -160,
+        -96
+      ],
+      "id": "8fc0ab9c-f296-46f8-87dc-779d37136f5b",
+      "name": "Responder - Documentación de uso (200)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c654d770-1235-4ed9-b789-8d9f3aa15363",
+              "leftValue": "={{ $json.body.barcode }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "e0287453-fc0f-4e52-bce0-fbd8ea0aa5d4",
+              "leftValue": "={{ $json.body.barcode }}",
+              "rightValue": "^\\d+$",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        96
+      ],
+      "id": "0ae3ed81-d314-47ea-abd2-fbe451154a0c",
+      "name": "Validar - Barcode válido"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"error\",\n  \"code\": \"INVALID_BARCODE\",\n  \"message\": \"El código de barras es obligatorio y debe contener solo números.\",\n  \"example\": {\n    \"barcode\": \"3017620422003\"\n  }\n}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        64,
+        192
+      ],
+      "id": "a6ba527d-ecce-4320-ba88-281f9612ac48",
+      "name": "Responder - Error de validación (400)"
+    },
+    {
+      "parameters": {
+        "url": "=https://world.openfoodfacts.org/api/v2/product/{{ $json.body.barcode }}.json?fields=product_name,brands,nutriscore_grade,nutriments",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        64,
+        32
+      ],
+      "id": "acb46fbc-f3ef-4f1d-9478-1b9b5a3ad8b4",
+      "name": "API - Consultar Open Food Facts"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c7d19401-a7ec-4e45-afaf-248857e7a70e",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": 1,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        288,
+        32
+      ],
+      "id": "f34ea50a-c99f-4829-9117-69e27abf1d64",
+      "name": "Validar - Producto encontrado"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"error\",\n  \"code\": \"PRODUCT_NOT_FOUND\",\n  \"message\": \"No se ha encontrado ningún producto con este código de barras.\",\n  \"example\": {\n    \"barcode\": \"3017620422003\"\n  }\n}",
+        "options": {
+          "responseCode": 404
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        496,
+        208
+      ],
+      "id": "1f3be2ed-c2d8-4dec-9745-f1bc758dc29f",
+      "name": "Responder - Producto no encontrado (404)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "052143d7-369f-43ef-8fe6-ae80cd6e2e45",
+              "leftValue": "={{ $json.product.nutriments.salt_100g }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "76001c75-7a3c-49d9-97da-3a92ddfa5c67",
+              "leftValue": "={{ $json.product.nutriments.fat_100g }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "697e5918-30b3-4ff5-a27a-23558303ecdf",
+              "leftValue": "={{ $json.product.nutriments['energy-kcal_100g'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "adc0c8b5-900a-40c5-ba05-8d139e317a4c",
+              "leftValue": "={{ $json.product.nutriments.sugars_100g }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        512,
+        -64
+      ],
+      "id": "ac6e3897-7a5a-47ff-a571-6392b8213924",
+      "name": "Validar - Datos nutricionales completos"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"insufficient_data\",\n  \"message\": \"El producto existe, pero no tiene suficientes datos nutricionales para calcular un veredicto.\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        736,
+        32
+      ],
+      "id": "d87b1ecd-b08f-4e22-8d11-f24162823683",
+      "name": "Responder - Datos insuficientes (200)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "366368a2-8e71-4193-97fc-8866ab9eebdf",
+              "name": "productName",
+              "value": "={{ $json.product.product_name }}",
+              "type": "string"
+            },
+            {
+              "id": "46be809b-4aea-487e-8a5c-7b6f24e80bcf",
+              "name": "brand",
+              "value": "={{ $json.product.brands }}",
+              "type": "string"
+            },
+            {
+              "id": "dae4bd78-4831-4eb8-835d-9842102a34c9",
+              "name": "nutriScore",
+              "value": "={{ $json.product.nutriscore_grade }}",
+              "type": "string"
+            },
+            {
+              "id": "d73c6ff2-1986-4354-a915-57eab33f8c18",
+              "name": "sugar",
+              "value": "={{ $json.product.nutriments.sugars_100g\n}}",
+              "type": "number"
+            },
+            {
+              "id": "8579022d-f5bf-4c63-9769-9a50d78a8cfb",
+              "name": "fat",
+              "value": "={{ $json.product.nutriments.fat_100g }}",
+              "type": "number"
+            },
+            {
+              "id": "82e3e46c-abe7-4786-a0fb-8ac3aa50972d",
+              "name": "energy",
+              "value": "={{ $json.product.nutriments['energy-kcal_100g'] }}",
+              "type": "number"
+            },
+            {
+              "id": "20d60a58-2b88-46a1-bf80-fbec81072af9",
+              "name": "salt",
+              "value": "={{ $json.product.nutriments.salt_100g }}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        736,
+        -160
+      ],
+      "id": "e8d611ba-7f63-4ede-a26a-2e6f63d6498b",
+      "name": "Extraer - Datos nutricionales"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f5f19ce1-d972-4331-ab49-c892c57d769a",
+              "name": "sugarLevel",
+              "value": "={{ $json.sugar < 5 ? 'bajo' : $json.sugar <= 22.5 ? 'medio' : 'alto' }}",
+              "type": "string"
+            },
+            {
+              "id": "7b0d668b-3aa7-437b-8004-6b49ecc755ef",
+              "name": "saltLevel",
+              "value": "={{ $json.salt > 1.5 ? 'alto' : 'no alto' }}",
+              "type": "string"
+            },
+            {
+              "id": "e864436a-8c5c-489b-bf81-2eb5560c29de",
+              "name": "fatLevel",
+              "value": "={{ $json.fat > 17.5 ? 'alto' : 'no alto' }}",
+              "type": "string"
+            },
+            {
+              "id": "9dcf78ce-cbeb-475f-94e2-eaa8cab31394",
+              "name": "fat",
+              "value": "={{ $json.product.nutriments.fat_100g }}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        960,
+        -160
+      ],
+      "id": "1f3ea9b2-63bd-4403-8d07-ba6e02a8f8b6",
+      "name": "Clasificar - Azúcar, sal y grasa"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $json;\n\nlet concernScore = 0;\n\nif (data.sugarLevel === 'alto') concernScore++;\nif (data.saltLevel === 'alto') concernScore++;\nif (data.fatLevel === 'alto') concernScore++;\n\nreturn {\n  json: {\n    ...data,\n    concernScore\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        -160
+      ],
+      "id": "d6875c1b-1f7e-43fd-af99-da7e0bb58f68",
+      "name": "Calcular - Concern Score"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b55380c9-a1f6-4a68-8dd7-00140267782b",
+              "name": "trafficVerdict",
+              "value": "={{ $json.concernScore === 0 ? 'saludable' : $json.concernScore === 1 ? 'moderado' : 'no saludable' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1408,
+        -160
+      ],
+      "id": "a49c8c7d-fec8-4aa6-9c70-5f26a2fe6090",
+      "name": "Determinar - Veredicto por semáforo"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a6379ffe-df7a-4df8-9cfa-ff4c5244103e",
+              "name": "nutriScoreVerdict",
+              "value": "={{ ['a','b'].includes($json.nutriScore?.toLowerCase()) ? 'saludable' : $json.nutriScore?.toLowerCase() === 'c' ? 'moderado' : ['d','e'].includes($json.nutriScore?.toLowerCase()) ? 'no saludable' : 'desconocido' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1632,
+        -160
+      ],
+      "id": "73473fe8-f7c1-4123-9e57-50a72d9432a6",
+      "name": "Evaluar - Nutri-Score"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aa7cc9a8-9ac1-44a8-bd79-4f9b93e153b9",
+              "name": "finalVerdict",
+              "value": "={{ $json.nutriScoreVerdict === 'desconocido' ? $json.trafficVerdict : ($json.trafficVerdict === 'no saludable' || $json.nutriScoreVerdict === 'no saludable') ? 'no saludable' : ($json.trafficVerdict === 'moderado' || $json.nutriScoreVerdict === 'moderado') ? 'moderado' : 'saludable' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1840,
+        -160
+      ],
+      "id": "d54b5e80-ce6f-4d53-b668-db32e122c646",
+      "name": "Determinar - Veredicto final"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3c1912e8-3899-4f2a-8ced-094f75c11cae",
+              "leftValue": "={{ $json.finalVerdict }}",
+              "rightValue": "saludable",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2064,
+        -160
+      ],
+      "id": "35384191-3738-4202-a524-73ceaaf8196b",
+      "name": "Enrutar - Veredicto saludable"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1fdab64e-33d6-4812-bd57-b79ca9d3011c",
+              "leftValue": "={{ $json.finalVerdict }}",
+              "rightValue": "moderado",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2288,
+        -64
+      ],
+      "id": "8df6ee45-bf15-43c9-83b1-5d07b661d55c",
+      "name": "Enrutar - Veredicto moderado"
+    },
+    {
+      "parameters": {
+        "model": "groq/compound-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2560,
+        80
+      ],
+      "id": "f8d29d6c-5a74-4ffb-a089-7ddbadf71f1d",
+      "name": "IA - Veredicto moderado",
+      "credentials": {
+        "groqApi": {
+          "id": "ZWwP1Jit1jqDQU1m",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analiza este producto y escribe un consejo breve, equilibrado y natural en español.\n\nProducto: {{ $json.productName }}\nAzúcar: {{ $json.sugar }} g/100g ({{ $json.sugarLevel }})\nSal: {{ $json.salt }} g/100g ({{ $json.saltLevel }})\nGrasa: {{ $json.fat }} g/100g ({{ $json.fatLevel }})\n\nEl veredicto es moderado. Recomienda consumirlo con moderación sin alarmar. Responde en 2 frases como máximo.",
+        "messages": {
+          "messageValues": []
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        2560,
+        -80
+      ],
+      "id": "8a6b5e60-2327-4606-8944-07ce822372e6",
+      "name": "Generar - Mensaje moderado"
+    },
+    {
+      "parameters": {
+        "model": "groq/compound-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2560,
+        432
+      ],
+      "id": "84ed45ab-ff6f-4a0c-a187-eaebc70edd4e",
+      "name": "IA - Veredicto no saludable",
+      "credentials": {
+        "groqApi": {
+          "id": "ZWwP1Jit1jqDQU1m",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analiza este producto y escribe un consejo breve, cauteloso y natural en español.\n\nProducto: {{ $json.productName }}\nAzúcar: {{ $json.sugar }} g/100g ({{ $json.sugarLevel }})\nSal: {{ $json.salt }} g/100g ({{ $json.saltLevel }})\nGrasa: {{ $json.fat }} g/100g ({{ $json.fatLevel }})\n\nEl veredicto es no saludable. Recomienda limitar su consumo de forma amable y sin alarmar. Responde en 2 frases como máximo.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        2560,
+        272
+      ],
+      "id": "b63ac8f3-b652-4656-aa0b-23c6389d21a4",
+      "name": "Generar - Mensaje no saludable"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2976,
+        -96
+      ],
+      "id": "e8329eff-71ae-4b7a-9ed1-86685f03b592",
+      "name": "Unir - Respuestas de IA"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analiza este producto y escribe un consejo breve, positivo y natural en español.\n\nProducto: {{ $json.productName }}\nAzúcar: {{ $json.sugar }} g/100g ({{ $json.sugarLevel }})\nSal: {{ $json.salt }} g/100g ({{ $json.saltLevel }})\nGrasa: {{ $json.fat }} g/100g ({{ $json.fatLevel }})\n\nEl veredicto es saludable. Responde en 2 frases como máximo.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        2576,
+        -432
+      ],
+      "id": "d95974b8-2aed-4373-a16f-e3fcddee6a7a",
+      "name": "Generar - Mensaje saludable"
+    },
+    {
+      "parameters": {
+        "model": "groq/compound-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2576,
+        -256
+      ],
+      "id": "06630783-3489-4b3e-87a4-f0e13a362f65",
+      "name": "IA - Veredicto saludable",
+      "credentials": {
+        "groqApi": {
+          "id": "ZWwP1Jit1jqDQU1m",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4b75f73c-2f65-47da-b7a5-02d7d8bc43c3",
+              "name": "finalMessage",
+              "value": "={{ `🥗 SNACKCHECK — ${$('Determinar - Veredicto final').item.json.productName}\n\nVeredicto: ${$('Determinar - Veredicto final').item.json.finalVerdict.toUpperCase()}\n\n${$('Determinar - Veredicto final').item.json.sugarLevel === 'alto' ? '🔴' : '🟢'} Azúcar: ${$('Determinar - Veredicto final').item.json.sugar} g/100g\n${$('Determinar - Veredicto final').item.json.saltLevel === 'alto' ? '🔴' : '🟢'} Sal: ${$('Determinar - Veredicto final').item.json.salt} g/100g\n${$('Determinar - Veredicto final').item.json.fatLevel === 'alto' ? '🔴' : '🟢'} Grasa: ${$('Determinar - Veredicto final').item.json.fat} g/100g\n\n🤖 ${$json.text}` }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3200,
+        -80
+      ],
+      "id": "f0d2cae3-940c-4d10-a422-d890d029fcb5",
+      "name": "Formatear - Respuesta final"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.finalMessage }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/plain"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        3424,
+        -80
+      ],
+      "id": "30c913c6-9439-4973-8f12-699aad1a3d98",
+      "name": "Responder - Veredicto final (200)"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validar - Solicitud vacía",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar - Solicitud vacía": {
+      "main": [
+        [
+          {
+            "node": "Responder - Documentación de uso (200)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Validar - Barcode válido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar - Barcode válido": {
+      "main": [
+        [
+          {
+            "node": "API - Consultar Open Food Facts",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder - Error de validación (400)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API - Consultar Open Food Facts": {
+      "main": [
+        [
+          {
+            "node": "Validar - Producto encontrado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar - Producto encontrado": {
+      "main": [
+        [
+          {
+            "node": "Validar - Datos nutricionales completos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder - Producto no encontrado (404)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar - Datos nutricionales completos": {
+      "main": [
+        [
+          {
+            "node": "Extraer - Datos nutricionales",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Responder - Datos insuficientes (200)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer - Datos nutricionales": {
+      "main": [
+        [
+          {
+            "node": "Clasificar - Azúcar, sal y grasa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clasificar - Azúcar, sal y grasa": {
+      "main": [
+        [
+          {
+            "node": "Calcular - Concern Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular - Concern Score": {
+      "main": [
+        [
+          {
+            "node": "Determinar - Veredicto por semáforo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Determinar - Veredicto por semáforo": {
+      "main": [
+        [
+          {
+            "node": "Evaluar - Nutri-Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evaluar - Nutri-Score": {
+      "main": [
+        [
+          {
+            "node": "Determinar - Veredicto final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Determinar - Veredicto final": {
+      "main": [
+        [
+          {
+            "node": "Enrutar - Veredicto saludable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrutar - Veredicto saludable": {
+      "main": [
+        [
+          {
+            "node": "Generar - Mensaje saludable",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enrutar - Veredicto moderado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrutar - Veredicto moderado": {
+      "main": [
+        [
+          {
+            "node": "Generar - Mensaje moderado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generar - Mensaje no saludable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA - Veredicto moderado": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generar - Mensaje moderado",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA - Veredicto no saludable": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generar - Mensaje no saludable",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar - Mensaje no saludable": {
+      "main": [
+        [
+          {
+            "node": "Unir - Respuestas de IA",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Generar - Mensaje moderado": {
+      "main": [
+        [
+          {
+            "node": "Unir - Respuestas de IA",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "IA - Veredicto saludable": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generar - Mensaje saludable",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar - Mensaje saludable": {
+      "main": [
+        [
+          {
+            "node": "Unir - Respuestas de IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unir - Respuestas de IA": {
+      "main": [
+        [
+          {
+            "node": "Formatear - Respuesta final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear - Respuesta final": {
+      "main": [
+        [
+          {
+            "node": "Responder - Veredicto final (200)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "a19549da-f7e6-4084-a8a8-de828e800fa6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c905606642035cf7f42d280dab121058461db835bd7fda75fa5deb06074996e1"
+  },
+  "nodeGroups": [],
+  "id": "PZyMS5ERi4TDVMV5",
+  "tags": []
+}
