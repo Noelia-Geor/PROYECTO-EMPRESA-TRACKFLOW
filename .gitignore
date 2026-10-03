@@ -1,0 +1,4 @@
+# Raw data may contain PII; keep datasets out of Git by default.
+data/raw/**
+!data/raw/README.md
+!data/raw/README.es.md
