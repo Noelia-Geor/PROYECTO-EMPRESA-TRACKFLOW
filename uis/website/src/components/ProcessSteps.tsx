@@ -57,13 +57,13 @@ export function ProcessSteps({ id, eyebrow, title, description, steps }: Process
   }, [reduced])
 
   const shown = reduced ? 1 : progress
-  // Cada paso se activa en su tramo del recorrido; el último llega antes del final.
-  const stepActive = (index: number) => shown >= (index + 0.4) / (steps.length + 0.4)
+  // El 01 se enciende en cuanto la sección se fija en el centro; los demás, en su tramo del recorrido.
+  const stepActive = (index: number) => shown >= (index / steps.length) * 0.95
   const lineScale = Math.min(1, shown * 1.15)
 
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className={`px-5 sm:px-8 ${reduced ? '' : 'pb-20 pt-16'}`}>
-      <div ref={trackRef} className={reduced ? '' : 'relative h-[200vh]'}>
+    <section id={id} aria-labelledby={`${id}-title`} className={`px-5 sm:px-8 ${reduced ? '' : 'pb-8 pt-16'}`}>
+      <div ref={trackRef} className={reduced ? '' : 'relative h-[170vh]'}>
         <div
           ref={stickyRef}
           className={reduced ? 'py-24 md:py-32' : 'sticky py-6'}
