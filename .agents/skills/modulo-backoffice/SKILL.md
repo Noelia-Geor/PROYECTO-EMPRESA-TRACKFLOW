@@ -17,13 +17,21 @@ Añadir a `uis/backoffice` el módulo de una sola área de TrackFlow, con datos 
 
 ## Pasos
 
-1. Lee en `CONTEXT.md` la sección que corresponde al área elegida. Las secciones fuente son «Operaciones de almacén», «Última milla y gestión de transportistas», «Logística inversa», «Experiencia del cliente», «Comercial y relación con clientes», «Dirección Ejecutiva» y «Tecnología».
-2. Crea los datos en `uis/backoffice/src/data/<area>.ts`. Junto a cada dato, añade un comentario que cite el nombre exacto de su sección en `CONTEXT.md`.
-3. Crea la página del módulo en `uis/backoffice/src/pages/`.
-4. Reutiliza componentes de `uis/backoffice/src/components/`; crea uno nuevo solo si no existe uno adecuado.
-5. Añade una entrada para la ruta del módulo al menú del layout del backoffice.
-6. Ejecuta `npm run lint` y `npm run build` dentro de `uis/backoffice`; ambos deben pasar sin errores.
-7. Actualiza `memory-bank/progress.md` con el módulo y su estado.
+1. Lee en `CONTEXT.md` la sección del área elegida («Operaciones de almacén», «Última milla y gestión de transportistas», «Logística inversa», «Experiencia del cliente», «Comercial y relación con clientes», «Dirección Ejecutiva» o «Tecnología»). Así cada dato procede de la fuente del dominio.
+2. Crea `uis/backoffice/src/data/<area>.ts` y comenta cada dato con el nombre exacto de su sección en `CONTEXT.md`. Así su origen es trazable y no se inventa información.
+3. Crea la página del módulo en `uis/backoffice/src/pages/` y aplica los tokens de identidad visual de `memory-bank/techContext.md`: `noche`, `superficie`, `crema`, `niebla` y `senal`. Así la nueva interfaz mantiene la identidad del backoffice.
+4. Reutiliza componentes de `uis/backoffice/src/components/`; crea uno nuevo solo si no existe uno adecuado. Así se mantiene la interfaz coherente y se evita duplicar componentes.
+5. Añade la ruta del módulo al menú del layout del backoffice. Así se puede encontrar y abrir desde la navegación.
+6. Ejecuta `npm run lint` y `npm run build` dentro de `uis/backoffice`; ambos deben pasar sin errores. Así se detectan problemas de calidad y compilación.
+7. Actualiza `memory-bank/progress.md` con el módulo y su estado. Así el avance del proyecto queda documentado.
+
+## Qué NO hacer
+
+- No inventes cifras, nombres, clientes ni contactos; si falta un dato necesario, detente y pregunta.
+- No nombres al CEO: `CONTEXT.md` contiene una discrepancia sobre quién ocupa ese cargo.
+- No modifiques `uis/website` ni ninguna ruta protegida enumerada en `AGENTS.md`.
+- No añadas dependencias nuevas sin preguntar.
+- No crees servicios backend; esta skill solo añade módulos al backoffice.
 
 ## Output
 
@@ -37,3 +45,19 @@ Añadir a `uis/backoffice` el módulo de una sola área de TrackFlow, con datos 
 - [ ] No se modificó `uis/website` ni ninguna ruta protegida por `AGENTS.md`.
 - [ ] `npm run lint` y `npm run build` pasan en `uis/backoffice`.
 - [ ] `memory-bank/progress.md` está actualizado.
+
+## Ejemplo
+
+**Entrada:** «Añade el módulo de Logística inversa».
+
+**Salida esperada:**
+
+- `uis/backoffice/src/data/logistica-inversa.ts`
+- `uis/backoffice/src/pages/LogisticaInversa.tsx`
+- Una entrada para el módulo en el menú del backoffice.
+
+| Dato              | Valor                                       | Trazabilidad                              |
+| ----------------- | ------------------------------------------- | ----------------------------------------- |
+| Responsable       | Sofía Ramos                                 | `CONTEXT.md`, sección «Logística inversa» |
+| Tamaño del equipo | 5 personas                                  | `CONTEXT.md`, sección «Logística inversa» |
+| Devoluciones      | 18 %–25 % del volumen, según cliente y país | `CONTEXT.md`, sección «Logística inversa» |

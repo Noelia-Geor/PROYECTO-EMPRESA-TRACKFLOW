@@ -42,7 +42,7 @@ Estos acuerdos forman parte de la solicitud de este hito y todavía no aparecen 
 | Token    | Color     | Uso                                                       |
 | -------- | --------- | --------------------------------------------------------- |
 | `marino` | `#0e2a47` | Fondos principales y texto sobre claro.                   |
-| `señal`  | `#ff6a1a` | Fondos de botones y acentos.                              |
+| `senal`  | `#ff6a1a` | Fondos de botones y acentos.                              |
 | `papel`  | `#f4f6f9` | Fondos claros.                                            |
 | `cartón` | `#b8c2cf` | Bordes y separadores.                                     |
 | `tinta`  | `#10161f` | Texto sobre naranja.                                      |
