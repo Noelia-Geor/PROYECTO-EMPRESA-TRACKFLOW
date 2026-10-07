@@ -32,7 +32,28 @@ Estos acuerdos forman parte de la solicitud de este hito y todavía no aparecen 
 - Cada aplicación usará Vite, React, TypeScript y Tailwind CSS.
 - Se usará npm como gestor de paquetes porque pnpm está roto en el Codespace.
 - Las interfaces se construirán primero en español como idioma base; [CONTEXT.md](../CONTEXT.md) recomienda comenzar el soporte multiidioma con un idioma base.
-- La identidad visual (colores y tipografía) no está definida en [CONTEXT.md](../CONTEXT.md): se definirá durante este hito y se documentará aquí.
+
+## Identidad visual
+
+`CONTEXT.md` no define una identidad visual. Se elige **Etiqueta de envío**, inspirada en las etiquetas y la señalización de almacén para que TrackFlow se reconozca como empresa logística.
+
+### Colores
+
+| Token    | Color     | Uso                                     |
+| -------- | --------- | --------------------------------------- |
+| `marino` | `#0e2a47` | Fondos principales y texto sobre claro. |
+| `señal`  | `#ff6a1a` | Fondos de botones y acentos.            |
+| `papel`  | `#f4f6f9` | Fondos claros.                          |
+| `cartón` | `#b8c2cf` | Bordes y separadores.                   |
+| `tinta`  | `#10161f` | Texto sobre naranja.                    |
+
+El naranja nunca se usa como color de texto sobre fondo blanco o `papel`; solo como fondo de botones con texto `tinta` o como acento sobre `marino`.
+
+### Tipografía
+
+Usar Google Fonts: **Archivo** 700/800 para títulos, **IBM Plex Sans** 400/500/600 para texto y **IBM Plex Mono** 500 para códigos, cifras y etiquetas.
+
+La identidad se aplica a `uis/website` y `uis/backoffice` como tokens de Tailwind mediante `@theme`.
 
 El backend futuro se ubicará en `services/`; el README raíz recomienda una API centralizada con FastAPI. Fuente: [README.es.md](../README.es.md).
 

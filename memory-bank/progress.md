@@ -4,7 +4,7 @@
 
 El trabajo se realiza en la rama `feature/agent-memory-bank`.
 
-`memory-bank/` y `AGENTS.md` están hechos. Las reglas del agente están en curso; esta tarea añade cuatro reglas iniciales en `.agents/rules/`.
+`memory-bank/`, `AGENTS.md`, las cuatro reglas de `.agents/rules/` y la skill `.agents/skills/modulo-backoffice/` están hechos. La identidad visual «Etiqueta de envío» está decidida y documentada en [techContext.md](techContext.md).
 
 El repositorio parte de una plantilla con contexto y estructura de carpetas, sin aplicaciones ejecutables todavía. Fuente: [README.es.md](../README.es.md).
 
@@ -12,11 +12,9 @@ En el estado comprobado para este hito, `uis/`, `services/` y `docs/` contienen 
 
 ## Próximos pasos del hito
 
-1. Completar y revisar las reglas del agente en `.agents/rules/`.
-2. Crear una skill en `.agents/skills/`.
-3. Crear `uis/website` como aplicación independiente con Vite, React, TypeScript y Tailwind; usar npm en el Codespace, según los acuerdos de este hito.
-4. Crear `uis/backoffice` con el mismo stack, también como aplicación independiente.
-5. Definir e implementar las experiencias pública e interna usando únicamente el dominio descrito en [CONTEXT.md](../CONTEXT.md); documentar cada aplicación y cómo ejecutarla, como recomienda [uis/README.es.md](../uis/README.es.md).
-6. Verificar que ambas aplicaciones se instalan y ejecutan con npm en el entorno del Codespace.
+1. Crear `uis/website` como aplicación independiente con Vite, React, TypeScript y Tailwind; usar npm en el Codespace, según los acuerdos de este hito.
+2. Crear `uis/backoffice` con el mismo stack, también como aplicación independiente.
+3. Implementar las experiencias pública e interna usando únicamente el dominio descrito en [CONTEXT.md](../CONTEXT.md); aplicar la identidad visual y documentar cada aplicación y cómo ejecutarla, como recomienda [uis/README.es.md](../uis/README.es.md).
+4. Verificar que ambas aplicaciones se instalan y ejecutan con npm en el entorno del Codespace.
 
 El backend con FastAPI pertenece a una fase futura en `services/`, de acuerdo con [README.es.md](../README.es.md); no forma parte de las aplicaciones frontend descritas en este estado.
