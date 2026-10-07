@@ -88,7 +88,7 @@ export const siteContent = {
         description:
           'Almacenamos el inventario de las marcas, recogemos los productos y preparamos y empaquetamos cada pedido.',
         // CONTEXT.md — «Operaciones de almacén»: ~70 operarios + 2 responsables de almacén.
-        fact: '~70 operarios · 2 almacenes',
+        stat: { value: '~70', label: 'operarios en 2 almacenes' },
       },
       {
         // CONTEXT.md — «Última Milla y Gestión de Transportistas».
@@ -96,7 +96,7 @@ export const siteContent = {
         description:
           'Coordinamos los envíos a través de una red de transportistas en Estados Unidos y España.',
         // CONTEXT.md — «Última milla y gestión de transportistas»: 6 coordinadores logísticos, 8 transportistas.
-        fact: '6 coordinadores · 8 transportistas',
+        stat: { value: '8', label: 'transportistas y 6 coordinadores' },
       },
       {
         // CONTEXT.md — «Logística Inversa».
@@ -104,7 +104,7 @@ export const siteContent = {
         description:
           'Gestionamos lo que ocurre cuando un producto regresa y cada decisión de su devolución.',
         // CONTEXT.md — «Logística inversa»: equipo de 5 personas; devoluciones 18–25 % del volumen.
-        fact: 'Devoluciones: 18–25 % del volumen',
+        stat: { value: '18–25 %', label: 'del volumen son devoluciones' },
       },
       {
         // CONTEXT.md — «Atención al Cliente».
@@ -112,7 +112,7 @@ export const siteContent = {
         description:
           'Atendemos consultas de las marcas que contratan el servicio y de las personas que reciben sus paquetes.',
         // CONTEXT.md — «Experiencia del cliente»: 15 agentes; email, WhatsApp y teléfono.
-        fact: '15 agentes · email, WhatsApp y teléfono',
+        stat: { value: '15', label: 'agentes por email, WhatsApp y teléfono' },
       },
     ],
   },

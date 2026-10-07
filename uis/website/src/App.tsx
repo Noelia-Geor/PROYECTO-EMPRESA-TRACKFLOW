@@ -36,7 +36,7 @@ function App() {
                 Icon={serviceIcons[index]}
                 title={service.title}
                 description={service.description}
-                fact={'fact' in service ? service.fact : undefined}
+                stat={service.stat}
               />
             ))}
           </div>
