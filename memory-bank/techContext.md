@@ -64,7 +64,7 @@ La identidad se aplica a `uis/website` y `uis/backoffice` como tokens de Tailwin
 
 - **Modo oscuro:** fondo `noche` en toda la página, con un único panel `crema` («Tú vendes. Nosotros lo llevamos») para dar ritmo sin cortes de color. Sobre `crema` el naranja de los números es `#a83d08` para cumplir contraste AA.
 - **Recurso visual propio:** punto → ruta → nodo → destino (`RouteMark`), usado en las etiquetas de sección, el recorrido del hero, las cifras, la red de transportistas, el mapa y el pie.
-- **Movimiento sutil y de una sola vez:** entrada de bloques al hacer scroll (`useReveal`), recorrido «Cómo trabajamos» fijado y guiado por el scroll, ruta Los Ángeles → Zaragoza que se dibuja al bajar. Sin partículas ni animaciones infinitas. Todo se desactiva con `prefers-reduced-motion`.
+- **Movimiento sutil y de una sola vez:** entrada de bloques al hacer scroll (`useReveal`), recorrido «Cómo trabajamos» fijado y guiado por el scroll, mapa real «Dónde estamos» (Natural Earth, generado una vez con d3-geo en `src/content/worldMap.ts`, sin dependencias en ejecución) que se queda fijo mientras un avión vuela de Los Ángeles a Zaragoza siguiendo el scroll. Sin partículas ni animaciones infinitas. Todo se desactiva con `prefers-reduced-motion`.
 - **Sin datos de contacto:** `CONTEXT.md` no aporta email, teléfono ni formulario, así que las llamadas a la acción llevan al recorrido y no a un contacto inventado.
 
 ### Decisiones del backoffice (07/10)

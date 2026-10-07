@@ -27,12 +27,7 @@ function App() {
         <StatStrip />
         <BrandPromise />
 
-        <Section
-          id="servicios"
-          eyebrow={services.eyebrow}
-          title={services.title}
-          description={services.description}
-        >
+        <Section id="servicios" eyebrow={services.eyebrow} title={services.title} description={services.description}>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {services.items.map((service, index) => (
               <ServiceCard
@@ -57,14 +52,13 @@ function App() {
           steps={process.steps}
         />
 
-        <Section
+        <RouteMap
           id="donde-estamos"
           eyebrow={locations.eyebrow}
           title={locations.title}
           description={locations.description}
-        >
-          <RouteMap locations={locations.items} />
-        </Section>
+          locations={locations.items}
+        />
 
         <section id="contacto" className="px-5 pb-24 pt-24 sm:px-8 md:pb-32 md:pt-32" aria-labelledby="contacto-title">
           <div
