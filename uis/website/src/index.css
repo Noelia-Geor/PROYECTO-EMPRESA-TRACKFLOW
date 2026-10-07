@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  --color-marino: #0e2a47;
+  --color-senal: #ff6a1a;
+  --color-papel: #f4f6f9;
+  --color-carton: #b8c2cf;
+  --color-tinta: #10161f;
+  --color-noche: #0a1822;
+  --font-display: "Archivo", sans-serif;
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+:root {
+  font-family: var(--font-sans);
+  color: var(--color-tinta);
+  background: var(--color-papel);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+@keyframes route-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.journey-card {
+  animation: route-float 6s ease-in-out infinite;
+}
+
+.journey-card:nth-child(2) {
+  animation-delay: -1s;
+}
+
+.journey-card:nth-child(3) {
+  animation-delay: -2s;
+}
+
+.journey-card:nth-child(4) {
+  animation-delay: -3s;
+}
+
+.journey-card:nth-child(5) {
+  animation-delay: -4s;
+}
+
+.journey-card:nth-child(6) {
+  animation-delay: -5s;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-senal);
+  outline-offset: 4px;
+}
+
+::selection {
+  color: var(--color-tinta);
+  background: var(--color-senal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
