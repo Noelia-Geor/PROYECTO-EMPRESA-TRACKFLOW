@@ -18,7 +18,9 @@ type ProcessStepsProps = {
 // y los pasos 01-04 aparecen uno a uno. Con movimiento reducido se muestra todo a la vez.
 export function ProcessSteps({ id, eyebrow, title, description, steps }: ProcessStepsProps) {
   const trackRef = useRef<HTMLDivElement>(null)
+  const stickyRef = useRef<HTMLDivElement>(null)
   const [progress, setProgress] = useState(0)
+  const [stickyTop, setStickyTop] = useState(0)
   const [reduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
   useEffect(() => {
@@ -27,10 +29,18 @@ export function ProcessSteps({ id, eyebrow, title, description, steps }: Process
     const update = () => {
       frame = 0
       const track = trackRef.current
-      if (!track) return
+      const sticky = stickyRef.current
+      if (!track || !sticky) return
+      // Se fija con el contenido centrado bajo la cabecera (72 px); si no cabe, se fija mostrando el final.
+      const header = 72
+      const height = sticky.offsetHeight
+      const free = window.innerHeight - header - height
+      const top = free >= 0 ? header + free / 2 : Math.min(header, window.innerHeight - height)
+      setStickyTop(top)
       const rect = track.getBoundingClientRect()
-      const scrollable = rect.height - window.innerHeight
-      const value = scrollable > 0 ? -rect.top / scrollable : 1
+      const pinned = rect.height - height
+      // Los pasos terminan al 85 % del tramo fijado; el resto es una pausa antes de seguir.
+      const value = pinned > 0 ? (top - rect.top) / (pinned * 0.85) : 1
       setProgress(Math.min(1, Math.max(0, value)))
     }
     const onScroll = () => {
@@ -52,9 +62,13 @@ export function ProcessSteps({ id, eyebrow, title, description, steps }: Process
   const lineScale = Math.min(1, shown * 1.15)
 
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className="px-5 sm:px-8">
-      <div ref={trackRef} className={reduced ? '' : 'relative h-[230vh]'}>
-        <div className={`${reduced ? 'py-24 md:py-32' : 'sticky top-0 pb-24 pt-24'}`}>
+    <section id={id} aria-labelledby={`${id}-title`} className={`px-5 sm:px-8 ${reduced ? '' : 'pb-20 pt-16'}`}>
+      <div ref={trackRef} className={reduced ? '' : 'relative h-[200vh]'}>
+        <div
+          ref={stickyRef}
+          className={reduced ? 'py-24 md:py-32' : 'sticky py-6'}
+          style={reduced ? undefined : { top: stickyTop }}
+        >
           <div className="mx-auto w-full max-w-7xl">
             <div className="mb-14 max-w-3xl md:mb-20">
               <p className="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.08em] text-niebla">
