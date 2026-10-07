@@ -12,7 +12,7 @@ type SectionProps = {
 
 export function Section({ id, eyebrow, title, description, children, className = '' }: SectionProps) {
   return (
-    <section id={id} className={`px-5 pb-4 pt-24 sm:px-8 md:pt-32 ${className}`} aria-labelledby={`${id}-title`}>
+    <section id={id} className={`px-5 pb-20 pt-32 sm:px-8 md:pb-28 md:pt-44 ${className}`} aria-labelledby={`${id}-title`}>
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-3xl md:mb-16" data-reveal>
           <p className="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.08em] text-niebla">

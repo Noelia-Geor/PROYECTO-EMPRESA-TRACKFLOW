@@ -1,6 +1,5 @@
 import { BrandPromise } from './components/BrandPromise'
 import { Button } from './components/Button'
-import { CarrierStrip } from './components/CarrierStrip'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
@@ -16,7 +15,7 @@ import { Headset, RotateCcw, Truck, Warehouse } from 'lucide-react'
 const serviceIcons = [Warehouse, Truck, RotateCcw, Headset]
 
 function App() {
-  const { services, process, locations, contact } = siteContent
+  const { services, process, locations, carriers, contact } = siteContent
   useReveal()
 
   return (
@@ -41,7 +40,6 @@ function App() {
               />
             ))}
           </div>
-          <CarrierStrip />
         </Section>
 
         <ProcessSteps
@@ -58,6 +56,7 @@ function App() {
           title={locations.title}
           description={locations.description}
           locations={locations.items}
+          carriers={carriers}
         />
 
         <section id="contacto" className="px-5 pb-24 pt-24 sm:px-8 md:pb-32 md:pt-32" aria-labelledby="contacto-title">

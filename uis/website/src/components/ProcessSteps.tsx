@@ -54,7 +54,7 @@ export function ProcessSteps({ id, eyebrow, title, description, steps }: Process
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="px-5 sm:px-8">
       <div ref={trackRef} className={reduced ? '' : 'relative h-[230vh]'}>
-        <div className={`${reduced ? 'py-24 md:py-32' : 'sticky top-0 pb-10 pt-24'}`}>
+        <div className={`${reduced ? 'py-24 md:py-32' : 'sticky top-0 pb-24 pt-24'}`}>
           <div className="mx-auto w-full max-w-7xl">
             <div className="mb-14 max-w-3xl md:mb-20">
               <p className="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.08em] text-niebla">

@@ -5,7 +5,7 @@ export function BrandPromise() {
   const { promise } = siteContent
 
   return (
-    <section className="px-3 pb-4 pt-24 sm:px-5 md:pt-32" aria-labelledby="promesa-title">
+    <section className="px-3 pb-4 pt-28 sm:px-5 md:pt-40" aria-labelledby="promesa-title">
       <div className="mx-auto max-w-[86rem] rounded-[2rem] bg-crema px-6 py-16 text-tinta sm:px-12 md:py-24 lg:px-20">
         <div data-reveal>
           <p className="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.08em] text-tinta/60">

@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Truck } from 'lucide-react'
 import { RouteMark } from './RouteMark'
 import { DESTINATION, FLIGHT, LAND, MAP_HEIGHT, MAP_WIDTH, ORIGIN } from '../content/worldMap'
 
@@ -8,12 +9,19 @@ type Location = {
   role: string
 }
 
+type Carriers = {
+  title: string
+  groups: readonly { country: string; names: readonly string[] }[]
+  extra: string
+}
+
 type RouteMapProps = {
   id: string
   eyebrow: string
   title: string
   description: string
   locations: readonly Location[]
+  carriers: Carriers
 }
 
 // Avión visto desde arriba, apuntando a la derecha y centrado en (0, 0).
@@ -22,7 +30,7 @@ const PLANE =
 
 // Mapa de la conexión entre los dos almacenes. Al bajar, un avión vuela de Los Ángeles a Zaragoza
 // siguiendo el scroll (si subes, vuelve) y el destino se enciende al aterrizar.
-export function RouteMap({ id, eyebrow, title, description, locations }: RouteMapProps) {
+export function RouteMap({ id, eyebrow, title, description, locations, carriers }: RouteMapProps) {
   const [origin, destination] = locations
   const ref = useRef<HTMLDivElement>(null)
   const routeRef = useRef<SVGPathElement>(null)
@@ -90,28 +98,39 @@ export function RouteMap({ id, eyebrow, title, description, locations }: RouteMa
                 <p className="mt-4 max-w-[38rem] text-base leading-7 text-niebla md:text-lg md:leading-8">{description}</p>
               </div>
               {/* Leyenda: los dos almacenes. El margen derecho la alinea con Zaragoza, dentro del mapa. */}
-              <ul className="mt-8 flex flex-wrap gap-x-10 gap-y-5 lg:mt-1 lg:mr-[17%] lg:flex-col">
-                {[origin, destination].map((location, index) => {
-                  const lit = index === 0 || arrived
-                  return (
-                    <li key={location.city} className="flex gap-3">
-                      <span
-                        className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full border transition-colors duration-500 ${
-                          lit ? 'border-senal bg-senal' : 'border-crema/50 bg-transparent'
-                        }`}
-                        aria-hidden="true"
-                      />
-                      <div>
-                        <p className="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-niebla">
-                          0{index + 1} · {location.country}
-                        </p>
-                        <p className="mt-1 font-display text-xl leading-tight font-bold text-crema">{location.city}</p>
-                        <p className="mt-0.5 text-sm whitespace-nowrap text-niebla">{location.role}</p>
-                      </div>
-                    </li>
-                  )
-                })}
-              </ul>
+              <div className="mt-8 lg:mt-1 lg:mr-[17%]">
+                <ul className="flex flex-wrap gap-x-10 gap-y-5 lg:flex-col">
+                  {[origin, destination].map((location, index) => {
+                    const lit = index === 0 || arrived
+                    return (
+                      <li key={location.city} className="flex gap-3">
+                        <span
+                          className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full border transition-colors duration-500 ${
+                            lit ? 'border-senal bg-senal' : 'border-crema/50 bg-transparent'
+                          }`}
+                          aria-hidden="true"
+                        />
+                        <div>
+                          <p className="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-niebla">
+                            0{index + 1} · {location.country}
+                          </p>
+                          <p className="mt-1 font-display text-xl leading-tight font-bold text-crema">{location.city}</p>
+                          <p className="mt-0.5 text-sm whitespace-nowrap text-niebla">{location.role}</p>
+                          {/* Desde cada almacén sale su red de transportistas (mismo orden: EE. UU., España). */}
+                          <p className="mt-2 flex items-center gap-2 text-sm font-semibold whitespace-nowrap text-crema/85">
+                            <Truck className="h-3.5 w-3.5 text-senal" strokeWidth={2} aria-hidden="true" />
+                            {carriers.groups[index]?.names.join(' · ')}
+                          </p>
+                        </div>
+                      </li>
+                    )
+                  })}
+                </ul>
+                <p className="mt-5 flex items-center gap-3 border-t border-white/10 pt-4 font-mono text-xs whitespace-nowrap text-niebla">
+                  <span className="h-2.5 w-2.5 rounded-full border border-dashed border-niebla" aria-hidden="true" />
+                  {carriers.title}, {carriers.extra}
+                </p>
+              </div>
             </div>
 
             <div className="lg:-mt-6">
@@ -119,7 +138,7 @@ export function RouteMap({ id, eyebrow, title, description, locations }: RouteMa
               <div className="w-full [mask-image:linear-gradient(to_right,transparent,#000_12%,#000_88%,transparent)]">
                 <div className="[mask-image:linear-gradient(to_bottom,transparent,#000_14%,#000_86%,transparent)]">
                   <svg
-                    className="mx-auto block h-auto max-h-[calc(100svh-16rem)] w-full"
+                    className="mx-auto block h-auto max-h-[calc(100svh-21rem)] w-full"
                     viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
                     role="img"
                     aria-label={`Mapa con la ruta entre ${origin.city} y ${destination.city}`}

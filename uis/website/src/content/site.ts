@@ -68,12 +68,12 @@ export const siteContent = {
   },
   // CONTEXT.md — «Última milla y gestión de transportistas»: UPS, FedEx y DHL en EE. UU.; MRW, SEUR y DHL en España, más dos locales.
   carriers: {
-    title: 'Red de 8 transportistas en dos países',
+    title: 'Red de 8 transportistas',
     groups: [
       { country: 'Estados Unidos', names: ['UPS', 'FedEx', 'DHL'] },
       { country: 'España', names: ['MRW', 'SEUR', 'DHL'] },
     ],
-    extra: '+ 2 transportistas locales',
+    extra: 'incluidos 2 locales',
   },
   services: {
     eyebrow: 'Qué hacemos',
