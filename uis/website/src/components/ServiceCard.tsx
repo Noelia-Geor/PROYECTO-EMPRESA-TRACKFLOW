@@ -2,27 +2,39 @@ import type { LucideIcon } from 'lucide-react'
 
 type ServiceCardProps = {
   number: number
+  total: number
   Icon: LucideIcon
   title: string
   description: string
-  detail?: string
+  fact?: string
 }
 
-export function ServiceCard({ number, Icon, title, description, detail }: ServiceCardProps) {
+export function ServiceCard({ number, total, Icon, title, description, fact }: ServiceCardProps) {
   return (
-    <article className="group relative flex min-h-64 flex-col border border-carton/70 bg-white p-5 transition duration-300 hover:-translate-y-1 hover:border-marino/30 hover:shadow-xl sm:p-6">
-      <span className="absolute inset-x-0 top-0 h-1 bg-senal" aria-hidden="true" />
-      <span className="mb-8 flex h-11 w-11 items-center justify-center bg-marino text-white transition-colors group-hover:bg-noche" aria-hidden="true">
-        <Icon size={20} strokeWidth={1.8} />
-      </span>
-      <span className="mb-3 font-mono text-xs text-marino/55" aria-hidden="true">0{number}</span>
-      <h3 className="font-display text-xl leading-tight font-bold text-marino">{title}</h3>
-      <p className="mt-3 text-sm leading-6 text-tinta/75">{description}</p>
-      {detail && (
-        <p className="mt-4 border-t border-carton/80 pt-3 font-mono text-[0.7rem] leading-5 text-marino">
-          {detail}
+    <article
+      data-reveal
+      style={{ transitionDelay: `${(number - 1) * 120}ms` }}
+      className={`group flex h-full flex-col rounded-2xl border border-white/[0.07] bg-superficie/60 p-7 transition duration-300 hover:-translate-y-0.5 hover:border-white/15 hover:bg-superficie md:p-8 ${
+        number % 2 === 0 ? 'lg:mt-10' : ''
+      }`}
+    >
+      <div className="flex items-center justify-between">
+        <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.06] text-crema" aria-hidden="true">
+          <Icon size={22} strokeWidth={1.7} />
+        </span>
+        <span className="flex items-center gap-2 font-mono text-xs text-niebla" aria-hidden="true">
+          <span className="h-1.5 w-1.5 rounded-full bg-senal/80 transition-colors group-hover:bg-senal" />
+          0{number} / 0{total}
+        </span>
+      </div>
+      <h3 className="mt-10 font-display text-[1.4rem] leading-tight font-bold text-crema">{title}</h3>
+      <p className="mb-8 mt-4 max-w-[28ch] text-[0.95rem] leading-7 text-niebla">{description}</p>
+      {fact ? (
+        <p className="mt-auto flex items-center gap-2 border-t border-white/[0.07] pt-5 font-mono text-xs text-crema/80">
+          <span className="h-1.5 w-1.5 shrink-0 rounded-full border border-senal" aria-hidden="true" />
+          {fact}
         </p>
-      )}
+      ) : null}
     </article>
   )
 }

@@ -6,7 +6,7 @@ El trabajo se realiza en la rama `feature/agent-memory-bank`.
 
 `memory-bank/`, `AGENTS.md`, las cuatro reglas de `.agents/rules/` y la skill `.agents/skills/modulo-backoffice/` están hechos. La identidad visual «Etiqueta de envío» está decidida y documentada en [techContext.md](techContext.md).
 
-`uis/website` ya contiene la web corporativa rediseñada con la identidad nocturna, flujo logístico ilustrado, fotografía de Unsplash en local y documentación en español e inglés. `npm run lint` y `npm run build` pasan. `uis/backoffice` todavía está pendiente. Fuente del dominio: [CONTEXT.md](../CONTEXT.md).
+`uis/website` ya contiene la web corporativa terminada: modo oscuro con panel crema, recurso visual punto → ruta → nodo, recorrido interactivo guiado por el scroll, red de transportistas, mapa Los Ángeles → Zaragoza, menú móvil, cifras reales de `CONTEXT.md` en cada servicio y documentación en español e inglés. Auditada en escritorio, tablet y móvil (390 px, sin scroll horizontal). `npm run lint` y `npm run build` pasan. `uis/backoffice` todavía está pendiente. Fuente del dominio: [CONTEXT.md](../CONTEXT.md).
 
 En el estado comprobado para este hito, `uis/`, `services/` y `docs/` contienen sus README, pero no hay apps ni servicios implementados en esas carpetas. `CONTEXT.md` ya contiene el briefing de TrackFlow. Fuentes: [CONTEXT.md](../CONTEXT.md), [uis/README.es.md](../uis/README.es.md), [services/README.es.md](../services/README.es.md) y [README.es.md](../README.es.md).
 

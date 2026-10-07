@@ -12,7 +12,7 @@ TrackFlow's public website introduces its last-mile logistics and warehouse serv
 
 ## Photograph
 
-Warehouse photo by [CHUTTERSNAP on Unsplash](https://unsplash.com/@chuttersnap), downloaded to `src/assets/almacen.jpg` under the Unsplash License. [Photo link](https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d).
+Warehouse photo from [Unsplash](https://unsplash.com/license), downloaded to `src/assets/almacen.jpg` under the Unsplash License (free to use, attribution not required). Author not verified; original image: `https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d`.
 
 ## Run
 

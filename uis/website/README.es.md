@@ -12,7 +12,7 @@ Sitio web público de TrackFlow, empresa de logística de última milla y gesti�
 
 ## Fotografía
 
-Foto de almacén de [CHUTTERSNAP en Unsplash](https://unsplash.com/@chuttersnap), descargada en `src/assets/almacen.jpg` bajo la licencia de Unsplash. [Enlace a la foto](https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d).
+Foto de almacén de [Unsplash](https://unsplash.com/license), descargada en `src/assets/almacen.jpg` bajo la licencia de Unsplash (uso libre, la atribución no es obligatoria). Autor no verificado; imagen original: `https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d`.
 
 ## Ejecutar
 

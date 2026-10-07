@@ -7,6 +7,10 @@
   --color-carton: #b8c2cf;
   --color-tinta: #10161f;
   --color-noche: #0a1822;
+  --color-superficie: #10232d;
+  --color-elevada: #162a34;
+  --color-crema: #f3f1ec;
+  --color-niebla: #9aa7ac;
   --font-display: "Archivo", sans-serif;
   --font-sans: "IBM Plex Sans", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
@@ -14,8 +18,8 @@
 
 :root {
   font-family: var(--font-sans);
-  color: var(--color-tinta);
-  background: var(--color-papel);
+  color: var(--color-crema);
+  background: var(--color-noche);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -25,40 +29,6 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
-}
-
-@keyframes route-float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-.journey-card {
-  animation: route-float 6s ease-in-out infinite;
-}
-
-.journey-card:nth-child(2) {
-  animation-delay: -1s;
-}
-
-.journey-card:nth-child(3) {
-  animation-delay: -2s;
-}
-
-.journey-card:nth-child(4) {
-  animation-delay: -3s;
-}
-
-.journey-card:nth-child(5) {
-  animation-delay: -4s;
-}
-
-.journey-card:nth-child(6) {
-  animation-delay: -5s;
 }
 
 body {
@@ -73,13 +43,80 @@ a {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-senal);
+  outline: 2px solid var(--color-senal);
   outline-offset: 4px;
 }
 
 ::selection {
   color: var(--color-tinta);
   background: var(--color-senal);
+}
+
+/* Entrada de bloques: solo se ocultan si el script de revelado está activo (html.reveal-on),
+   así la página se ve completa sin JavaScript o con movimiento reducido. */
+.reveal-on [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 480ms ease-out,
+    transform 480ms ease-out;
+}
+
+.reveal-on [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Recorrido logístico: la línea se dibuja y los nodos se encienden en orden. */
+.route-progress {
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1) 150ms;
+}
+
+.route-progress-vertical {
+  transform-origin: center top;
+  transform: scaleY(0);
+  transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1) 150ms;
+}
+
+.is-visible .route-progress {
+  transform: scaleX(1);
+}
+
+.is-visible .route-progress-vertical {
+  transform: scaleY(1);
+}
+
+.route-node {
+  transition:
+    background-color 300ms ease-out,
+    border-color 300ms ease-out,
+    color 300ms ease-out;
+}
+
+.is-visible .route-node {
+  border-color: var(--color-senal);
+  color: var(--color-crema);
+}
+
+.is-visible .route-node[data-step="1"] { transition-delay: 300ms; }
+.is-visible .route-node[data-step="2"] { transition-delay: 650ms; }
+.is-visible .route-node[data-step="3"] { transition-delay: 1000ms; }
+.is-visible .route-node[data-step="4"] { transition-delay: 1350ms; }
+
+/* Nodos del hero: se encienden una sola vez al cargar. */
+@keyframes node-on {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-step {
+  animation: node-on 500ms ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -90,5 +127,11 @@ a {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .route-progress,
+  .route-progress-vertical {
+    transform: none;
   }
 }

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { RouteMark } from './RouteMark'
 
 type SectionProps = {
   id: string
@@ -9,34 +10,26 @@ type SectionProps = {
   className?: string
 }
 
-export function Section({
-  id,
-  eyebrow,
-  title,
-  description,
-  children,
-  className = '',
-}: SectionProps) {
+export function Section({ id, eyebrow, title, description, children, className = '' }: SectionProps) {
   return (
-    <section
-      id={id}
-      className={`px-5 py-20 sm:px-8 md:py-28 ${className}`}
-      aria-labelledby={`${id}-title`}
-    >
+    <section id={id} className={`px-5 pb-4 pt-24 sm:px-8 md:pt-32 ${className}`} aria-labelledby={`${id}-title`}>
       <div className="mx-auto max-w-7xl">
-        <div className="mb-10 max-w-3xl md:mb-14">
-          <p className="mb-4 font-mono text-xs uppercase text-marino/65">
+        <div className="mb-12 max-w-3xl md:mb-16" data-reveal>
+          <p className="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.08em] text-niebla">
+            <RouteMark className="text-niebla" />
             {eyebrow}
           </p>
           <h2
             id={`${id}-title`}
-            className="font-display text-4xl leading-[1.08] font-extrabold text-marino sm:text-5xl"
+            className="font-display text-4xl leading-[1.06] font-extrabold text-balance text-crema md:text-[3.1rem]"
           >
             {title}
           </h2>
-          {description && (
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-tinta/75">{description}</p>
-          )}
+          {description ? (
+            <p className="mt-6 max-w-[38rem] text-base leading-7 text-niebla md:text-lg md:leading-8">
+              {description}
+            </p>
+          ) : null}
         </div>
         {children}
       </div>

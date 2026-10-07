@@ -1,19 +1,23 @@
+import { BrandPromise } from './components/BrandPromise'
 import { Button } from './components/Button'
+import { CarrierStrip } from './components/CarrierStrip'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
-import { LocationCard } from './components/LocationCard'
 import { ProcessSteps } from './components/ProcessSteps'
+import { RouteMap } from './components/RouteMap'
 import { Section } from './components/Section'
 import { ServiceCard } from './components/ServiceCard'
 import { StatStrip } from './components/StatStrip'
 import { siteContent } from './content/site'
+import { useReveal } from './components/useReveal'
 import { Headset, RotateCcw, Truck, Warehouse } from 'lucide-react'
 
 const serviceIcons = [Warehouse, Truck, RotateCcw, Headset]
 
 function App() {
   const { services, process, locations, contact } = siteContent
+  useReveal()
 
   return (
     <>
@@ -21,73 +25,63 @@ function App() {
       <main id="contenido">
         <Hero />
         <StatStrip />
+        <BrandPromise />
 
         <Section
           id="servicios"
           eyebrow={services.eyebrow}
           title={services.title}
           description={services.description}
-          className="bg-white"
         >
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {services.items.map((service, index) => (
               <ServiceCard
                 key={service.title}
                 number={index + 1}
+                total={services.items.length}
                 Icon={serviceIcons[index]}
                 title={service.title}
                 description={service.description}
-                detail={'detail' in service ? service.detail : undefined}
+                fact={'fact' in service ? service.fact : undefined}
               />
             ))}
           </div>
+          <CarrierStrip />
         </Section>
 
-        <Section
+        <ProcessSteps
           id="como-trabajamos"
           eyebrow={process.eyebrow}
           title={process.title}
           description={process.description}
-          className="bg-papel"
-        >
-          <ProcessSteps steps={process.steps} />
-        </Section>
+          steps={process.steps}
+        />
 
         <Section
           id="donde-estamos"
           eyebrow={locations.eyebrow}
           title={locations.title}
           description={locations.description}
-          className="bg-white"
         >
-          <div className="grid gap-4 md:grid-cols-2">
-            {locations.items.map((location, index) => (
-              <LocationCard key={location.city} location={location} number={index + 1} />
-            ))}
-          </div>
+          <RouteMap locations={locations.items} />
         </Section>
 
-        <section
-          id="contacto"
-          className="bg-marino px-5 py-20 text-white sm:px-8 md:py-28"
-          aria-labelledby="contacto-title"
-        >
-          <div className="mx-auto flex max-w-7xl flex-col items-start gap-8 border-t border-white/20 pt-8 md:flex-row md:items-end md:justify-between">
+        <section id="contacto" className="px-5 pb-24 pt-24 sm:px-8 md:pb-32 md:pt-32" aria-labelledby="contacto-title">
+          <div
+            className="mx-auto flex max-w-7xl flex-col items-start gap-10 border-t border-white/10 pt-16 md:flex-row md:items-end md:justify-between"
+            data-reveal
+          >
             <div className="max-w-3xl">
-              <p className="mb-5 font-mono text-xs uppercase text-senal">
-                {contact.eyebrow}
-              </p>
+              <p className="mb-5 font-mono text-xs uppercase tracking-[0.08em] text-senal">{contact.eyebrow}</p>
               <h2
                 id="contacto-title"
-                className="max-w-3xl font-display text-4xl leading-[1.04] font-extrabold text-white sm:text-5xl md:text-6xl"
+                className="font-display text-4xl leading-[1.04] font-extrabold text-balance text-crema md:text-[3.4rem]"
               >
                 {contact.title}
               </h2>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-white/75">
-                {contact.description}
-              </p>
+              <p className="mt-6 max-w-[38rem] text-lg leading-8 text-niebla">{contact.description}</p>
             </div>
-            <Button href="#servicios">{contact.action}</Button>
+            <Button href="#como-trabajamos">{contact.action}</Button>
           </div>
         </section>
       </main>
