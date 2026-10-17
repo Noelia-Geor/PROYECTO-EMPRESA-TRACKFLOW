@@ -2,6 +2,13 @@
 
 TrackFlow's public website introduces its last-mile logistics and warehouse services, how an order moves through the operation, its locations in Los Angeles and Zaragoza, and an application form for brands.
 
+## Public URL (Codespaces)
+
+- Landing: https://trackflow-69jqg6xww4grcrpr4-4173.app.github.dev/
+- Form: https://trackflow-69jqg6xww4grcrpr4-4173.app.github.dev/application.html
+
+It only responds while the Codespace is running with `npm run preview` on port 4173 set to public. GitHub shows a warning page the first time a public port is opened ("Continue"). The Codespaces tunnel adds `X-Robots-Tag: noindex`, so Lighthouse loses SEO points there; locally SEO scores 100.
+
 ## Milestone pages and files
 
 | File | What it is |

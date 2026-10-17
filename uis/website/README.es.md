@@ -2,6 +2,13 @@
 
 Sitio web público de TrackFlow, empresa de logística de última milla y gestión de almacenes. Presenta sus servicios, el recorrido de un pedido por la operación, sus ubicaciones en Los Ángeles y Zaragoza y un formulario de solicitud para marcas.
 
+## URL pública (Codespaces)
+
+- Landing: https://trackflow-69jqg6xww4grcrpr4-4173.app.github.dev/
+- Formulario: https://trackflow-69jqg6xww4grcrpr4-4173.app.github.dev/application.html
+
+Solo responde mientras el Codespace está encendido y `npm run preview` en marcha con el puerto 4173 en público. GitHub muestra una página de aviso la primera vez que se abre un puerto público («Continue»). El túnel de Codespaces añade `X-Robots-Tag: noindex`, así que Lighthouse resta en SEO ahí; en local el SEO da 100.
+
 ## Páginas y archivos del hito
 
 | Archivo | Qué es |
