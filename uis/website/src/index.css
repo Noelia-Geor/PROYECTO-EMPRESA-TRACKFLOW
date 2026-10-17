@@ -11,6 +11,7 @@
   --color-elevada: #162a34;
   --color-crema: #f3f1ec;
   --color-niebla: #9aa7ac;
+  --color-error: #ff8a94;
   --font-display: "Archivo", sans-serif;
   --font-sans: "IBM Plex Sans", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
@@ -119,6 +120,63 @@ a {
   animation: node-on 500ms ease-out both;
 }
 
+/* Formulario de solicitud (application.html). */
+@layer components {
+  .form-group {
+    @apply min-w-0 rounded-2xl border border-white/[0.08] bg-superficie/60 p-5 shadow-[0_24px_60px_-40px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.04)] sm:p-7;
+  }
+
+  .form-legend {
+    @apply float-left mb-6 w-full font-display text-xl font-bold text-crema;
+  }
+
+  .form-step {
+    @apply mr-3 inline-flex h-7 w-7 items-center justify-center rounded-full bg-senal align-[2px] font-mono text-xs text-tinta;
+  }
+
+  .form-group > .form-legend + * {
+    clear: both;
+  }
+
+  .form-label {
+    @apply mb-2 block text-[0.95rem] font-semibold text-crema;
+  }
+
+  .form-input {
+    @apply block min-h-12 w-full rounded-md border border-white/20 bg-noche px-4 py-3 text-base text-crema transition-colors placeholder:text-niebla/70 hover:border-white/35 focus-visible:border-senal focus-visible:outline-offset-2;
+    color-scheme: dark;
+  }
+
+  .form-input[aria-invalid="true"] {
+    @apply border-error;
+  }
+
+  .form-hint {
+    @apply mt-2 text-sm text-niebla;
+  }
+
+  .form-error {
+    @apply mt-2 flex items-start gap-2 text-sm font-medium text-error;
+  }
+
+  .form-error::before {
+    content: "!";
+    @apply mt-px flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-error font-mono text-[0.7rem] leading-none text-tinta;
+  }
+
+  .form-choice {
+    @apply flex min-h-12 cursor-pointer items-center gap-3 rounded-md border border-white/15 bg-noche px-4 py-3 text-[0.95rem] text-crema transition-colors hover:border-white/35 has-checked:border-senal has-checked:bg-senal/10;
+  }
+
+  [data-invalid] .form-choice {
+    @apply border-error/70;
+  }
+
+  .form-check {
+    @apply h-5 w-5 shrink-0 accent-senal;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -134,4 +192,9 @@ a {
   .route-progress-vertical {
     transform: none;
   }
+}
+
+/* Hero: la foto gana contraste y pierde algo de saturación para encajar con el azul noche. */
+.hero-photo {
+  filter: saturate(0.82) contrast(1.06) brightness(0.95);
 }

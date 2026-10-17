@@ -2,23 +2,673 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/trackflow.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a1822" />
+    <title>TrackFlow · Logística de última milla y almacenes</title>
+    <!-- CONTEXT.md — introducción: almacenamiento, preparación, envío y devoluciones para marcas de e-commerce en EE. UU. y España. -->
     <meta
       name="description"
       content="TrackFlow almacena inventario para marcas de e-commerce, prepara y envía pedidos y gestiona devoluciones en Estados Unidos y España."
     />
+    <meta name="theme-color" content="#0a1822" />
+    <link rel="icon" type="image/svg+xml" href="/trackflow.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="TrackFlow" />
+    <meta property="og:title" content="TrackFlow · De la estantería a la puerta del cliente" />
+    <meta
+      property="og:description"
+      content="Almacenamos inventario para marcas de e-commerce, preparamos sus pedidos, los enviamos con una red de 8 transportistas y gestionamos las devoluciones."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!--seo:head-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&amp;family=IBM+Plex+Mono:wght@500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap"
       rel="stylesheet"
     />
-    <title>TrackFlow · Logística de última milla</title>
+    <link rel="stylesheet" href="/src/index.css" />
+    <!-- Schema.org Organization. Datos de CONTEXT.md (introducción, «Cómo está organizada la empresa»).
+         Sin dirección postal, teléfono ni email porque CONTEXT.md no los da; url y logo se añaden en el build si hay dominio público. -->
+    <script type="application/ld+json" id="schema-organization">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "TrackFlow",
+        "description": "Empresa de logística de última milla y gestión de almacenes para marcas de e-commerce: almacena su inventario, prepara y empaqueta los pedidos, los envía a través de una red de transportistas y gestiona las devoluciones.",
+        "foundingDate": "2009",
+        "foundingLocation": {
+          "@type": "Place",
+          "name": "Los Ángeles, Estados Unidos"
+        },
+        "areaServed": [
+          { "@type": "Country", "name": "Estados Unidos" },
+          { "@type": "Country", "name": "España" }
+        ],
+        "location": [
+          {
+            "@type": "Place",
+            "name": "Almacén de Los Ángeles",
+            "address": { "@type": "PostalAddress", "addressLocality": "Los Ángeles", "addressCountry": "US" }
+          },
+          {
+            "@type": "Place",
+            "name": "Almacén y oficina de tecnología de Zaragoza",
+            "address": { "@type": "PostalAddress", "addressLocality": "Zaragoza", "addressCountry": "ES" }
+          }
+        ],
+        "knowsAbout": ["Logística de última milla", "Gestión de almacenes", "Logística inversa", "Comercio electrónico"],
+        "makesOffer": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Almacenamiento y preparación de pedidos" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Envíos de última milla" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Logística inversa" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Atención a marcas y destinatarios" } }
+        ]
+      }
+    </script>
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+  <body class="bg-noche">
+    <a
+      href="#contenido"
+      class="sr-only z-[60] rounded-md bg-senal px-4 py-3 font-semibold text-tinta focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+      >Saltar al contenido</a
+    >
+
+    <header
+      data-site-header
+      data-solid="false"
+      class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-colors duration-300 data-[solid=true]:border-white/10 data-[solid=true]:bg-noche/95 data-[solid=true]:backdrop-blur-xl"
+    >
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 sm:px-8 md:py-5">
+        <a
+          href="#inicio"
+          class="flex w-fit items-center gap-2.5 font-display text-2xl leading-none font-extrabold text-crema sm:text-[1.7rem]"
+          aria-label="TrackFlow, inicio"
+        >
+          <span class="h-3 w-3 rounded-[2px] bg-senal" aria-hidden="true"></span>
+          <span>TrackFlow</span>
+        </a>
+
+        <button
+          type="button"
+          class="group flex h-11 w-11 items-center justify-center rounded-md text-crema lg:hidden"
+          aria-expanded="false"
+          aria-controls="menu-principal"
+          aria-label="Abrir menú"
+          data-menu-toggle
+        >
+          <span class="relative block h-3.5 w-6" aria-hidden="true">
+            <span class="absolute left-0 top-0 h-0.5 w-6 bg-crema transition-transform group-aria-expanded:top-1.5 group-aria-expanded:rotate-45"></span>
+            <span class="absolute left-0 top-1.5 h-0.5 w-6 bg-crema transition-opacity group-aria-expanded:opacity-0"></span>
+            <span class="absolute left-0 top-3 h-0.5 w-6 bg-crema transition-transform group-aria-expanded:top-1.5 group-aria-expanded:-rotate-45"></span>
+          </span>
+        </button>
+
+        <nav aria-label="Navegación principal" class="hidden lg:block">
+          <ul class="flex items-center gap-x-9 text-[0.95rem] font-medium text-crema/80">
+            <li><a class="py-2 transition-colors hover:text-crema" href="#servicios">Servicios</a></li>
+            <li><a class="py-2 transition-colors hover:text-crema" href="#como-trabajamos">Cómo trabajamos</a></li>
+            <li><a class="py-2 transition-colors hover:text-crema" href="#donde-estamos">Dónde estamos</a></li>
+            <li>
+              <a
+                class="inline-flex min-h-11 items-center rounded-md border border-senal/70 px-4 font-semibold text-crema transition-colors hover:bg-senal hover:text-tinta"
+                href="/application.html"
+                >Solicitar información</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <nav id="menu-principal" aria-label="Navegación principal" class="border-t border-white/10 lg:hidden" hidden>
+        <ul class="mx-auto max-w-7xl px-5 py-3 sm:px-8">
+          <li>
+            <a class="flex items-center gap-3 py-3 font-display text-xl font-bold text-crema" href="#servicios">
+              <span class="h-1.5 w-1.5 rounded-full bg-senal" aria-hidden="true"></span>Servicios
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center gap-3 py-3 font-display text-xl font-bold text-crema" href="#como-trabajamos">
+              <span class="h-1.5 w-1.5 rounded-full bg-senal" aria-hidden="true"></span>Cómo trabajamos
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center gap-3 py-3 font-display text-xl font-bold text-crema" href="#donde-estamos">
+              <span class="h-1.5 w-1.5 rounded-full bg-senal" aria-hidden="true"></span>Dónde estamos
+            </a>
+          </li>
+          <li>
+            <a class="flex items-center gap-3 py-3 font-display text-xl font-bold text-senal" href="/application.html">
+              <span class="h-1.5 w-1.5 rounded-full bg-senal" aria-hidden="true"></span>Solicitar información
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="contenido">
+      <!-- HERO — CONTEXT.md, introducción: llevar los productos desde el almacén hasta la puerta del cliente. -->
+      <section
+        id="inicio"
+        class="relative isolate overflow-hidden px-5 pb-36 pt-36 sm:px-8 md:pb-44 md:pt-44 lg:flex lg:min-h-[54rem] lg:items-center"
+        aria-labelledby="hero-title"
+      >
+        <!-- Foto en alta resolución (original de 3840 px): el navegador elige el tamaño según pantalla y densidad. -->
+        <picture>
+          <source
+            type="image/avif"
+            srcset="/src/assets/almacen-640.avif 640w, /src/assets/almacen-1024.avif 1024w, /src/assets/almacen-1600.avif 1600w, /src/assets/almacen-2400.avif 2400w, /src/assets/almacen-3200.avif 3200w"
+            sizes="100vw"
+          />
+          <source
+            type="image/webp"
+            srcset="/src/assets/almacen-640.webp 640w, /src/assets/almacen-1024.webp 1024w, /src/assets/almacen-1600.webp 1600w, /src/assets/almacen-2400.webp 2400w, /src/assets/almacen-3200.webp 3200w"
+            sizes="100vw"
+          />
+          <!-- La fotografía no representa una sede concreta de TrackFlow; es decorativa. -->
+          <img
+            class="hero-photo absolute inset-0 -z-30 h-full w-full object-cover object-[62%_45%]"
+            src="/src/assets/almacen-1600.jpg"
+            alt=""
+            width="1600"
+            height="1067"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+        <!-- Etalonaje: azul noche sobre la foto sin aplastar el detalle, y una luz cálida de nave a la derecha. -->
+        <div class="absolute inset-0 -z-20 bg-[#0b2236]/45 mix-blend-multiply" aria-hidden="true"></div>
+        <div
+          class="absolute inset-0 -z-20 bg-[radial-gradient(42%_55%_at_80%_28%,rgba(255,150,80,0.22),transparent_70%)] mix-blend-screen"
+          aria-hidden="true"
+        ></div>
+        <!-- Velo solo donde va el texto: vertical en móvil, lateral en escritorio; fundido con la página por abajo. -->
+        <div
+          class="absolute inset-0 -z-10 bg-linear-to-b from-noche/80 via-noche/75 to-noche/40 lg:bg-linear-to-r lg:from-noche lg:from-15% lg:via-noche/70 lg:via-45% lg:to-transparent lg:to-75%"
+          aria-hidden="true"
+        ></div>
+        <div class="absolute inset-x-0 top-0 -z-10 h-40 bg-linear-to-b from-noche/80 to-transparent" aria-hidden="true"></div>
+        <div class="absolute inset-x-0 bottom-0 -z-10 h-56 bg-linear-to-t from-noche to-transparent" aria-hidden="true"></div>
+
+        <div class="mx-auto grid w-full max-w-7xl items-center gap-14 lg:grid-cols-[1.1fr_0.9fr] xl:gap-20">
+          <div>
+            <!-- CONTEXT.md — introducción: almacenes en Los Ángeles y Zaragoza. -->
+            <p class="mb-7 inline-flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.08em] text-crema/80">
+              <span class="h-1.5 w-1.5 rounded-full bg-senal" aria-hidden="true"></span>
+              Los Ángeles ⇄ Zaragoza
+            </p>
+            <h1 id="hero-title" class="font-display text-5xl leading-[1.02] font-extrabold text-balance text-crema sm:text-6xl xl:text-[4.4rem]">
+              De la estantería a la <span class="text-senal">puerta del cliente.</span>
+            </h1>
+            <!-- CONTEXT.md — introducción: almacenamiento, preparación, envío y devoluciones para marcas de e-commerce. -->
+            <p class="mt-7 max-w-[35rem] text-lg leading-8 text-crema/85">
+              Almacenamos inventario para marcas de e-commerce, preparamos y empaquetamos sus pedidos, los enviamos con una red de transportistas y gestionamos las devoluciones.
+            </p>
+            <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <a
+                class="group inline-flex min-h-13 items-center justify-center gap-3 rounded-md bg-senal px-7 text-[0.95rem] font-semibold text-tinta shadow-[0_14px_40px_-12px_rgba(255,106,26,0.85),inset_0_1px_0_rgba(255,255,255,0.35)] transition-colors hover:bg-[#ff7d38]"
+                href="/application.html"
+              >
+                Solicitar información
+                <span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-1">→</span>
+              </a>
+              <a
+                class="group inline-flex min-h-13 items-center justify-center gap-3 rounded-md border border-white/25 bg-noche/40 px-6 text-[0.95rem] font-semibold text-crema backdrop-blur-sm transition-colors hover:border-white/50 hover:bg-noche/60"
+                href="#como-trabajamos"
+              >
+                Descubre cómo trabajamos
+                <span
+                  aria-hidden="true"
+                  class="flex h-6 w-6 items-center justify-center rounded-full border border-white/40 text-xs transition-transform duration-200 group-hover:translate-y-0.5"
+                  >↓</span
+                >
+              </a>
+            </div>
+          </div>
+
+          <!-- CONTEXT.md — introducción, «Operaciones de almacén», «Última Milla y Gestión de Transportistas» y «Logística Inversa». -->
+          <div class="relative w-full max-w-md justify-self-center rounded-2xl border border-white/15 bg-noche/50 p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl sm:p-8 lg:justify-self-end">
+            <p class="mb-6 font-mono text-[0.7rem] uppercase tracking-[0.1em] text-niebla" id="hero-journey-title">Recorrido de un pedido</p>
+            <div class="relative">
+            <span class="absolute bottom-6 left-[15px] top-4 w-px bg-white/15" aria-hidden="true"></span>
+            <ol class="relative" aria-labelledby="hero-journey-title">
+              <li class="hero-step relative flex items-start gap-4 pb-5" style="animation-delay: 200ms">
+                <span class="relative z-10 flex h-[31px] w-[31px] shrink-0 items-center justify-center rounded-full border border-white/25 bg-noche text-crema" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" /><path d="m3.3 7 8.7 5 8.7-5" /><path d="M12 22V12" /></svg>
+                </span>
+                <span class="min-w-0 pt-0.5">
+                  <span class="block font-display text-[1.02rem] font-bold text-crema">Pedido recibido</span>
+                  <span class="mt-0.5 block font-mono text-xs text-niebla">Marca de e-commerce</span>
+                </span>
+              </li>
+              <li class="hero-step relative flex items-start gap-4 pb-5" style="animation-delay: 360ms">
+                <span class="relative z-10 flex h-[31px] w-[31px] shrink-0 items-center justify-center rounded-full border border-white/25 bg-noche text-crema" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11" /><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z" /><path d="M6 13h12" /><path d="M6 17h12" /></svg>
+                </span>
+                <span class="min-w-0 pt-0.5">
+                  <span class="block font-display text-[1.02rem] font-bold text-crema">Almacén</span>
+                  <span class="mt-0.5 block font-mono text-xs text-niebla">Los Ángeles · Zaragoza</span>
+                </span>
+              </li>
+              <li class="hero-step relative flex items-start gap-4 pb-5" style="animation-delay: 520ms">
+                <span class="relative z-10 flex h-[31px] w-[31px] shrink-0 items-center justify-center rounded-full border border-white/25 bg-noche text-crema" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17V3" /><path d="m6 11 6 6 6-6" /><path d="M19 21H5" /></svg>
+                </span>
+                <span class="min-w-0 pt-0.5">
+                  <span class="block font-display text-[1.02rem] font-bold text-crema">Picking y empaquetado</span>
+                  <span class="mt-0.5 block font-mono text-xs text-niebla">Preparación del pedido</span>
+                </span>
+              </li>
+              <li class="hero-step relative flex items-start gap-4 pb-5" style="animation-delay: 680ms">
+                <span class="relative z-10 flex h-[31px] w-[31px] shrink-0 items-center justify-center rounded-full border border-white/25 bg-noche text-crema" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" /><path d="M15 18H9" /><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" /><circle cx="17" cy="18" r="2" /><circle cx="7" cy="18" r="2" /></svg>
+                </span>
+                <span class="min-w-0 pt-0.5">
+                  <span class="block font-display text-[1.02rem] font-bold text-crema">Transportista</span>
+                  <span class="mt-0.5 block font-mono text-xs text-niebla">UPS · FedEx · MRW · SEUR</span>
+                </span>
+              </li>
+              <li class="hero-step relative flex items-start gap-4" style="animation-delay: 840ms">
+                <span class="relative z-10 flex h-[31px] w-[31px] shrink-0 items-center justify-center rounded-full border border-senal bg-senal text-tinta" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>
+                </span>
+                <span class="min-w-0 pt-0.5">
+                  <span class="block font-display text-[1.02rem] font-bold text-crema">Entregado</span>
+                  <span class="mt-0.5 block font-mono text-xs text-niebla">Puerta del cliente</span>
+                </span>
+              </li>
+            </ol>
+            </div>
+            <div class="hero-step mt-5 flex items-start gap-4 border-t border-dashed border-senal/40 pt-5" style="animation-delay: 1100ms">
+              <span class="flex h-[31px] w-[31px] shrink-0 items-center justify-center rounded-full border border-senal/70 text-senal" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
+              </span>
+              <span class="pt-0.5">
+                <span class="block font-display text-[1.02rem] font-bold text-crema">Devolución</span>
+                <span class="mt-0.5 block font-mono text-xs text-niebla">Logística inversa</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CIFRAS — las cifras como paradas de una misma ruta. -->
+      <section class="relative z-10 -mt-24 px-5 sm:px-8 md:-mt-28" aria-label="TrackFlow en cifras">
+        <div
+          class="relative mx-auto max-w-7xl rounded-2xl border border-white/10 bg-superficie/80 px-6 pb-8 pt-7 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl sm:px-10"
+        >
+          <span class="absolute left-10 right-10 top-[2.05rem] hidden border-t border-dashed border-white/20 md:block" aria-hidden="true"></span>
+          <dl class="relative grid grid-cols-2 gap-y-10 sm:grid-cols-3 md:grid-cols-5">
+            <!-- CONTEXT.md — introducción: almacenes en Los Ángeles y Zaragoza. -->
+            <div class="pr-4">
+              <span class="mb-6 hidden h-3 w-3 rounded-full bg-senal md:block" aria-hidden="true"></span>
+              <dt class="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-niebla">almacenes</dt>
+              <dd class="mt-2 font-display text-4xl leading-none font-extrabold text-crema tabular-nums md:text-5xl">2</dd>
+            </div>
+            <!-- CONTEXT.md — «Última Milla y Gestión de Transportistas». -->
+            <div class="pr-4">
+              <span class="mb-6 hidden h-3 w-3 rounded-full border border-white/40 bg-noche md:block" aria-hidden="true"></span>
+              <dt class="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-niebla">transportistas</dt>
+              <dd class="mt-2 font-display text-4xl leading-none font-extrabold text-crema tabular-nums md:text-5xl">8</dd>
+            </div>
+            <!-- CONTEXT.md — introducción: Estados Unidos y España. -->
+            <div class="pr-4">
+              <span class="mb-6 hidden h-3 w-3 rounded-full border border-white/40 bg-noche md:block" aria-hidden="true"></span>
+              <dt class="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-niebla">países</dt>
+              <dd class="mt-2 font-display text-4xl leading-none font-extrabold text-crema tabular-nums md:text-5xl">2</dd>
+            </div>
+            <!-- CONTEXT.md — introducción: fundada en 2009. -->
+            <div class="pr-4">
+              <span class="mb-6 hidden h-3 w-3 rounded-full border border-white/40 bg-noche md:block" aria-hidden="true"></span>
+              <dt class="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-niebla">fundación</dt>
+              <dd class="mt-2 font-display text-4xl leading-none font-extrabold text-crema tabular-nums md:text-5xl">2009</dd>
+            </div>
+            <!-- CONTEXT.md — introducción: unos 130 empleados. -->
+            <div class="pr-4">
+              <span class="mb-6 hidden h-3 w-3 rounded-full border-2 border-senal bg-noche md:block" aria-hidden="true"></span>
+              <dt class="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-niebla">personas</dt>
+              <dd class="mt-2 font-display text-4xl leading-none font-extrabold text-crema tabular-nums md:text-5xl">~130</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- PROMESA — CONTEXT.md, introducción: las marcas son buenas haciendo y vendiendo productos, no haciéndolos llegar a la puerta. -->
+      <section class="px-3 pb-4 pt-28 sm:px-5 md:pt-40" aria-labelledby="promesa-title">
+        <div class="mx-auto max-w-[86rem] rounded-[2rem] border border-white/[0.07] bg-superficie/60 px-6 py-16 text-crema sm:px-12 md:py-24 lg:px-20">
+          <div data-reveal>
+            <p class="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.08em] text-niebla">
+              <svg class="h-2.5 w-14 shrink-0 text-niebla" viewBox="0 0 56 10" fill="none" aria-hidden="true"><circle cx="4" cy="5" r="3" fill="#ff6a1a" /><path d="M10 5H40" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="2 4" stroke-linecap="round" /><circle cx="50" cy="5" r="3.25" stroke="currentColor" stroke-opacity="0.7" stroke-width="1.25" /></svg>
+              Por qué TrackFlow
+            </p>
+            <h2 id="promesa-title" class="max-w-3xl font-display text-4xl leading-[1.06] font-extrabold text-balance text-crema md:text-[3.1rem]">
+              Tú vendes. Nosotros lo llevamos hasta la puerta.
+            </h2>
+          </div>
+
+          <div class="mt-14 grid gap-12 md:mt-20 lg:grid-cols-[0.8fr_auto_1.2fr] lg:gap-10" data-reveal>
+            <div>
+              <p class="font-mono text-xs uppercase tracking-[0.1em] text-niebla">Tu marca</p>
+              <p class="mt-4 max-w-sm font-display text-3xl leading-tight font-bold text-crema md:text-[2.1rem]">Hace y vende buenos productos.</p>
+            </div>
+
+            <!-- La relación como una ruta: de la marca a TrackFlow. -->
+            <div class="flex items-center lg:flex-col lg:pt-8" aria-hidden="true">
+              <span class="h-2.5 w-2.5 rounded-full bg-crema/60"></span>
+              <span class="mx-2 h-px w-16 border-t border-dashed border-white/25 lg:mx-0 lg:my-2 lg:h-20 lg:w-px lg:border-l lg:border-t-0"></span>
+              <span class="h-3 w-3 rounded-full border-2 border-senal"></span>
+            </div>
+
+            <!-- CONTEXT.md — introducción: almacena, prepara y empaqueta, envía y gestiona devoluciones. -->
+            <div>
+              <p class="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.1em] text-niebla">
+                <span class="h-2 w-2 rounded-[2px] bg-senal" aria-hidden="true"></span>
+                TrackFlow
+              </p>
+              <ol class="mt-4 divide-y divide-white/[0.07] border-y border-white/10">
+                <li class="flex items-baseline gap-5 py-4"><span class="font-mono text-xs text-senal">01</span><span class="text-lg text-crema">Almacena tu inventario</span></li>
+                <li class="flex items-baseline gap-5 py-4"><span class="font-mono text-xs text-senal">02</span><span class="text-lg text-crema">Prepara y empaqueta los pedidos</span></li>
+                <li class="flex items-baseline gap-5 py-4"><span class="font-mono text-xs text-senal">03</span><span class="text-lg text-crema">Los envía con su red de transportistas</span></li>
+                <li class="flex items-baseline gap-5 py-4"><span class="font-mono text-xs text-senal">04</span><span class="text-lg text-crema">Gestiona las devoluciones</span></li>
+              </ol>
+              <!-- CONTEXT.md — introducción: toda la operación, del pedido a la entrega o devolución, es responsabilidad de TrackFlow. -->
+              <p class="mt-5 max-w-lg text-sm leading-6 text-niebla">Del pedido a la entrega o la devolución, la operación es responsabilidad de TrackFlow.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICIOS — CONTEXT.md, introducción y «Cómo está organizada la empresa». -->
+      <section id="servicios" class="px-5 pb-20 pt-32 sm:px-8 md:pb-28 md:pt-44" aria-labelledby="servicios-title">
+        <div class="mx-auto max-w-7xl">
+          <div class="mb-12 md:mb-16 lg:grid lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-16" data-reveal>
+            <div>
+              <p class="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.08em] text-niebla">
+                <svg class="h-2.5 w-14 shrink-0 text-niebla" viewBox="0 0 56 10" fill="none" aria-hidden="true"><circle cx="4" cy="5" r="3" fill="#ff6a1a" /><path d="M10 5H40" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="2 4" stroke-linecap="round" /><circle cx="50" cy="5" r="3.25" stroke="currentColor" stroke-opacity="0.7" stroke-width="1.25" /></svg>
+                Qué hacemos
+              </p>
+              <h2 id="servicios-title" class="font-display text-4xl leading-[1.06] font-extrabold text-balance text-crema md:text-[3.1rem]">
+                La operación logística, de principio a fin.
+              </h2>
+            </div>
+            <p class="mt-6 max-w-[38rem] text-base leading-7 text-niebla md:text-lg md:leading-8 lg:mt-0 lg:pb-1">
+              Desde que se hace un pedido hasta que se entrega o se devuelve, la operación logística queda en manos de TrackFlow.
+            </p>
+          </div>
+
+          <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <!-- CONTEXT.md — «Operaciones de almacén»: ~70 operarios + 2 responsables de almacén. -->
+            <article
+              data-reveal
+              style="transition-delay: 0ms"
+              class="group flex h-full flex-col rounded-2xl border border-white/[0.07] bg-superficie/60 p-7 transition duration-300 hover:-translate-y-0.5 hover:border-white/15 hover:bg-superficie"
+            >
+              <div class="flex items-center justify-between">
+                <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-white/[0.06] text-crema" aria-hidden="true">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11" /><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z" /><path d="M6 13h12" /><path d="M6 17h12" /></svg>
+                </span>
+                <span class="flex items-center gap-2 font-mono text-xs text-niebla" aria-hidden="true">
+                  <span class="h-1.5 w-1.5 rounded-full bg-senal/80 transition-colors group-hover:bg-senal"></span>01 / 04
+                </span>
+              </div>
+              <p class="mt-8 font-display text-[2.6rem] leading-none font-extrabold whitespace-nowrap text-senal">~70</p>
+              <p class="mt-2 min-h-12 text-sm leading-6 text-crema/85">operarios en 2 almacenes</p>
+              <div class="mt-7 border-t border-white/[0.07] pt-6">
+                <h3 class="font-display text-xl leading-tight font-bold text-crema">Almacenamiento y preparación</h3>
+                <p class="mt-3 text-[0.95rem] leading-7 text-niebla">Almacenamos el inventario de las marcas, recogemos los productos y preparamos y empaquetamos cada pedido.</p>
+              </div>
+            </article>
+
+            <!-- CONTEXT.md — «Última milla y gestión de transportistas»: 6 coordinadores logísticos, 8 transportistas. -->
+            <article
+              data-reveal
+              style="transition-delay: 120ms"
+              class="group flex h-full flex-col rounded-2xl border border-white/[0.07] bg-superficie/60 p-7 transition duration-300 hover:-translate-y-0.5 hover:border-white/15 hover:bg-superficie"
+            >
+              <div class="flex items-center justify-between">
+                <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-white/[0.06] text-crema" aria-hidden="true">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" /><path d="M15 18H9" /><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" /><circle cx="17" cy="18" r="2" /><circle cx="7" cy="18" r="2" /></svg>
+                </span>
+                <span class="flex items-center gap-2 font-mono text-xs text-niebla" aria-hidden="true">
+                  <span class="h-1.5 w-1.5 rounded-full bg-senal/80 transition-colors group-hover:bg-senal"></span>02 / 04
+                </span>
+              </div>
+              <p class="mt-8 font-display text-[2.6rem] leading-none font-extrabold whitespace-nowrap text-senal">8</p>
+              <p class="mt-2 min-h-12 text-sm leading-6 text-crema/85">transportistas y 6 coordinadores</p>
+              <div class="mt-7 border-t border-white/[0.07] pt-6">
+                <h3 class="font-display text-xl leading-tight font-bold text-crema">Envíos de última milla</h3>
+                <p class="mt-3 text-[0.95rem] leading-7 text-niebla">Coordinamos los envíos a través de una red de transportistas en Estados Unidos y España.</p>
+              </div>
+            </article>
+
+            <!-- CONTEXT.md — «Logística inversa»: equipo de 5 personas; devoluciones 18–25 % del volumen. -->
+            <article
+              data-reveal
+              style="transition-delay: 240ms"
+              class="group flex h-full flex-col rounded-2xl border border-white/[0.07] bg-superficie/60 p-7 transition duration-300 hover:-translate-y-0.5 hover:border-white/15 hover:bg-superficie"
+            >
+              <div class="flex items-center justify-between">
+                <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-white/[0.06] text-crema" aria-hidden="true">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
+                </span>
+                <span class="flex items-center gap-2 font-mono text-xs text-niebla" aria-hidden="true">
+                  <span class="h-1.5 w-1.5 rounded-full bg-senal/80 transition-colors group-hover:bg-senal"></span>03 / 04
+                </span>
+              </div>
+              <p class="mt-8 font-display text-[2.6rem] leading-none font-extrabold whitespace-nowrap text-senal">18–25 %</p>
+              <p class="mt-2 min-h-12 text-sm leading-6 text-crema/85">del volumen son devoluciones</p>
+              <div class="mt-7 border-t border-white/[0.07] pt-6">
+                <h3 class="font-display text-xl leading-tight font-bold text-crema">Logística inversa</h3>
+                <p class="mt-3 text-[0.95rem] leading-7 text-niebla">Gestionamos lo que ocurre cuando un producto regresa y cada decisión de su devolución.</p>
+              </div>
+            </article>
+
+            <!-- CONTEXT.md — «Experiencia del cliente»: 15 agentes; email, WhatsApp y teléfono. -->
+            <article
+              data-reveal
+              style="transition-delay: 360ms"
+              class="group flex h-full flex-col rounded-2xl border border-white/[0.07] bg-superficie/60 p-7 transition duration-300 hover:-translate-y-0.5 hover:border-white/15 hover:bg-superficie"
+            >
+              <div class="flex items-center justify-between">
+                <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-white/[0.06] text-crema" aria-hidden="true">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z" /><path d="M21 16v2a4 4 0 0 1-4 4h-5" /></svg>
+                </span>
+                <span class="flex items-center gap-2 font-mono text-xs text-niebla" aria-hidden="true">
+                  <span class="h-1.5 w-1.5 rounded-full bg-senal/80 transition-colors group-hover:bg-senal"></span>04 / 04
+                </span>
+              </div>
+              <p class="mt-8 font-display text-[2.6rem] leading-none font-extrabold whitespace-nowrap text-senal">15</p>
+              <p class="mt-2 min-h-12 text-sm leading-6 text-crema/85">agentes por email, WhatsApp y teléfono</p>
+              <div class="mt-7 border-t border-white/[0.07] pt-6">
+                <h3 class="font-display text-xl leading-tight font-bold text-crema">Atención a marcas y destinatarios</h3>
+                <p class="mt-3 text-[0.95rem] leading-7 text-niebla">Atendemos consultas de las marcas que contratan el servicio y de las personas que reciben sus paquetes.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- RECORRIDO — la operación actual de CONTEXT.md, escena a escena. Sin JavaScript o con movimiento
+           reducido se lee como lista; con JavaScript, la isla React la convierte en el recorrido guiado por el scroll. -->
+      <section id="como-trabajamos" class="pt-24 md:pt-32" aria-labelledby="como-trabajamos-title">
+        <div class="mx-auto max-w-7xl px-5 sm:px-8">
+          <div class="max-w-3xl" data-reveal>
+            <p class="mb-5 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.08em] text-niebla">
+              <svg class="h-2.5 w-14 shrink-0 text-niebla" viewBox="0 0 56 10" fill="none" aria-hidden="true"><circle cx="4" cy="5" r="3" fill="#ff6a1a" /><path d="M10 5H40" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="2 4" stroke-linecap="round" /><circle cx="50" cy="5" r="3.25" stroke="currentColor" stroke-opacity="0.7" stroke-width="1.25" /></svg>
+              Cómo trabajamos
+            </p>
+            <h2 id="como-trabajamos-title" class="font-display text-4xl leading-[1.06] font-extrabold text-balance text-crema md:text-[3.1rem]">
+              El recorrido de un pedido.
+            </h2>
+            <!-- CONTEXT.md — introducción: TrackFlow responde por la operación de pedido a entrega o devolución. -->
+            <p class="mt-6 max-w-[38rem] text-base leading-7 text-niebla md:text-lg md:leading-8">
+              Así se mueve un pedido por la operación de TrackFlow: de la estantería al muelle, del transportista a la puerta del cliente y, si regresa, de vuelta al almacén.
+            </p>
+            <a
+              href="#donde-estamos"
+              class="mt-6 inline-flex min-h-11 items-center gap-2 font-mono text-xs uppercase tracking-[0.08em] text-niebla underline decoration-white/20 underline-offset-4 hover:text-crema"
+              >Saltar el recorrido <span aria-hidden="true">↓</span></a
+            >
+          </div>
+        </div>
+
+        <div id="recorrido-root">
+          <ol class="mx-auto mt-14 grid max-w-7xl gap-x-8 gap-y-10 px-5 sm:grid-cols-2 sm:px-8 lg:grid-cols-3" data-journey-scenes>
+            <!-- CONTEXT.md — introducción y «Operaciones de almacén»: almacenes en Los Ángeles y Zaragoza. -->
+            <li data-scene="entrada" data-label="Pasillo" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Entrada al pasillo</h3>
+              <p class="mt-2 leading-7 text-niebla">Un operario entra en un pasillo del almacén. TrackFlow guarda el inventario de las marcas en sus almacenes de Los Ángeles y Zaragoza.</p>
+            </li>
+            <!-- CONTEXT.md — «Operaciones de almacén»: el picking se hace con listas en papel. -->
+            <li data-scene="localizacion" data-label="Ubicación" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Localización</h3>
+              <p class="mt-2 leading-7 text-niebla">Con la lista de picking en papel, localiza en la estantería el producto del pedido.</p>
+            </li>
+            <!-- CONTEXT.md — «Cómo está organizada la empresa»: cada día, cientos de pedidos se recogen de las estanterías. -->
+            <li data-scene="recogida" data-label="Recogida" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Recogida</h3>
+              <p class="mt-2 leading-7 text-niebla">Recoge la caja de la estantería. Cada día, cientos de pedidos se recogen así en los dos almacenes.</p>
+            </li>
+            <!-- CONTEXT.md — introducción: TrackFlow prepara y empaqueta los pedidos. -->
+            <li data-scene="traslado" data-label="Traslado" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Traslado</h3>
+              <p class="mt-2 leading-7 text-niebla">Lleva el producto a la zona de preparación.</p>
+            </li>
+            <!-- CONTEXT.md — introducción: prepara y empaqueta los pedidos. -->
+            <li data-scene="empaquetado" data-label="Empaquetado" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Preparación y empaquetado</h3>
+              <p class="mt-2 leading-7 text-niebla">El pedido se prepara y se empaqueta para el envío.</p>
+            </li>
+            <!-- CONTEXT.md — «Cómo está organizada la empresa»: cientos de pedidos al día se empaquetan y se entregan a los transportistas.
+                 La agrupación en palet es una representación ilustrativa: CONTEXT.md no detalla cómo se agrupan. -->
+            <li data-scene="consolidacion" data-label="Agrupación" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Listo para salir</h3>
+              <p class="mt-2 leading-7 text-niebla">El paquete empaquetado se reúne con el resto de pedidos del día que esperan su salida.</p>
+            </li>
+            <!-- CONTEXT.md — «Cómo está organizada la empresa»: los pedidos se entregan a los transportistas. -->
+            <li data-scene="muelle" data-label="Muelle" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Muelle de carga</h3>
+              <p class="mt-2 leading-7 text-niebla">Los pedidos preparados se llevan al muelle para entregarlos a los transportistas.</p>
+            </li>
+            <!-- CONTEXT.md — «Última milla y gestión de transportistas»: coordinadores que asignan cada envío; 8 transportistas. -->
+            <li data-scene="transportista" data-label="Transportista" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Transportista</h3>
+              <p class="mt-2 leading-7 text-niebla">Un coordinador asigna el envío a uno de los 8 transportistas de la red: UPS, FedEx y DHL en Estados Unidos; MRW, SEUR y DHL en España, más dos locales.</p>
+            </li>
+            <!-- CONTEXT.md — introducción: Estados Unidos y España. -->
+            <li data-scene="transito" data-label="Tránsito" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">En tránsito</h3>
+              <p class="mt-2 leading-7 text-niebla">El paquete sale del almacén con el transportista, en Estados Unidos o en España.</p>
+            </li>
+            <!-- CONTEXT.md — «Última Milla y Gestión de Transportistas»: seguimiento de entregas e incidencias. -->
+            <li data-scene="ruta" data-label="Ruta" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Ruta</h3>
+              <p class="mt-2 leading-7 text-niebla">El equipo de última milla hace seguimiento de la entrega y gestiona las incidencias: entregas fallidas, direcciones incorrectas o paquetes perdidos.</p>
+            </li>
+            <!-- CONTEXT.md — introducción: hasta la puerta del cliente. -->
+            <li data-scene="entrega" data-label="Entrega" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Entrega</h3>
+              <p class="mt-2 leading-7 text-niebla">El paquete llega a la puerta del cliente.</p>
+            </li>
+            <!-- CONTEXT.md — «Logística Inversa»: 18–25 % del volumen y la cadena de decisiones de cada devolución. -->
+            <li data-scene="devolucion" data-label="Devolución" class="border-t border-white/10 pt-5">
+              <h3 class="font-display text-xl font-bold text-crema">Devolución</h3>
+              <p class="mt-2 leading-7 text-niebla">Si el producto regresa, vuelve al almacén. Las devoluciones son entre el 18 % y el 25 % del volumen, y en cada una se decide: aprobar o rechazar, recoger o no, reacondicionar o desechar.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- DÓNDE ESTAMOS — CONTEXT.md, introducción y «Última milla y gestión de transportistas». Con JavaScript se convierte en el mapa animado. -->
+      <div id="mapa-root">
+        <section id="donde-estamos" class="px-5 pt-24 sm:px-8 md:pt-32" aria-labelledby="donde-estamos-title">
+          <div class="mx-auto max-w-7xl">
+            <p class="mb-4 font-mono text-xs uppercase tracking-[0.08em] text-niebla">Dónde estamos</p>
+            <h2 id="donde-estamos-title" class="font-display text-4xl leading-[1.06] font-extrabold text-balance text-crema md:text-[3.1rem]">Dos almacenes. Dos países.</h2>
+            <p class="mt-4 max-w-[38rem] text-base leading-7 text-niebla md:text-lg md:leading-8">
+              TrackFlow opera en Estados Unidos y España desde sus almacenes en Los Ángeles y Zaragoza.
+            </p>
+            <ul class="mt-8 flex flex-wrap gap-x-10 gap-y-5">
+              <li><p class="font-mono text-xs uppercase tracking-[0.1em] text-crema">Los Ángeles · Estados Unidos</p><p class="mt-1 text-sm text-niebla">Almacén · origen de TrackFlow</p></li>
+              <li><p class="font-mono text-xs uppercase tracking-[0.1em] text-crema">Zaragoza · España</p><p class="mt-1 text-sm text-niebla">Almacén · oficina de tecnología</p></li>
+            </ul>
+            <p class="mt-8 text-sm text-niebla">Red de 8 transportistas: UPS, FedEx y DHL en Estados Unidos; MRW, SEUR y DHL en España, incluidos 2 locales.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- LLAMADA A LA ACCIÓN — CONTEXT.md, introducción: almacenamiento, preparación, envío y devoluciones para marcas. -->
+      <section id="solicitar" class="px-3 pb-24 pt-24 sm:px-5 md:pb-32 md:pt-32" aria-labelledby="solicitar-title">
+        <div
+          class="relative isolate mx-auto max-w-[86rem] overflow-hidden rounded-[2rem] border border-white/10 bg-linear-to-br from-[#123246] via-superficie to-noche px-6 py-16 shadow-[0_40px_120px_-50px_rgba(0,0,0,0.9)] sm:px-12 md:py-20 lg:px-20"
+          data-reveal
+        >
+          <div class="absolute -right-24 -top-32 -z-10 h-96 w-96 rounded-full bg-senal/20 blur-3xl" aria-hidden="true"></div>
+          <!-- Ruta decorativa: almacén → transportista → puerta (el mismo recurso punto → ruta → nodo de la marca). -->
+          <svg
+            class="absolute bottom-0 right-0 -z-10 hidden h-full w-[52%] md:block"
+            viewBox="0 0 520 320"
+            fill="none"
+            preserveAspectRatio="xMaxYMax meet"
+            aria-hidden="true"
+          >
+            <path d="M40 270 C 160 270, 170 150, 280 150 S 420 60, 490 50" stroke="#f3f1ec" stroke-opacity="0.18" stroke-width="2" stroke-dasharray="3 9" stroke-linecap="round" />
+            <path d="M40 270 C 160 270, 170 150, 280 150" stroke="#ff6a1a" stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="40" cy="270" r="7" fill="#ff6a1a" />
+            <circle cx="40" cy="270" r="16" stroke="#ff6a1a" stroke-opacity="0.35" />
+            <circle cx="280" cy="150" r="7" fill="#0a1822" stroke="#ff6a1a" stroke-width="2.5" />
+            <circle cx="490" cy="50" r="8" fill="#0a1822" stroke="#f3f1ec" stroke-opacity="0.7" stroke-width="2" />
+          </svg>
+          <div class="max-w-2xl">
+            <p class="mb-5 font-mono text-xs uppercase tracking-[0.08em] text-senal">Para marcas de e-commerce</p>
+            <h2 id="solicitar-title" class="font-display text-4xl leading-[1.04] font-extrabold text-balance text-crema md:text-[3.4rem]">
+              Del pedido a la puerta, en dos países.
+            </h2>
+            <p class="mt-6 max-w-[34rem] text-lg leading-8 text-crema/80">
+              TrackFlow almacena tu inventario, prepara y envía tus pedidos y gestiona las devoluciones. Cuéntanos cómo es tu operación.
+            </p>
+            <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <a
+                class="group inline-flex min-h-13 shrink-0 items-center justify-center gap-3 rounded-md bg-senal px-7 text-[0.95rem] font-semibold text-tinta shadow-[0_14px_40px_-12px_rgba(255,106,26,0.85),inset_0_1px_0_rgba(255,255,255,0.35)] transition-colors hover:bg-[#ff7d38]"
+                href="/application.html"
+              >
+                Solicitar información
+                <span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-1">→</span>
+              </a>
+              <!-- CONTEXT.md — introducción: almacenes en Los Ángeles y Zaragoza. -->
+              <p class="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.08em] text-niebla">
+                <span class="h-2 w-2 rounded-full bg-senal" aria-hidden="true"></span>Los Ángeles · Zaragoza
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="px-5 py-10 sm:px-8">
+      <div class="mx-auto grid max-w-7xl gap-8 border-t border-white/10 pt-8 sm:grid-cols-[1fr_auto] sm:items-start">
+        <div>
+          <a href="#inicio" class="w-fit font-display text-xl leading-none font-extrabold" aria-label="TrackFlow, inicio">
+            <span class="mr-2 inline-block h-2.5 w-2.5 rounded-[2px] bg-senal" aria-hidden="true"></span><span class="text-crema">TrackFlow</span>
+          </a>
+          <!-- CONTEXT.md — introducción: almacenes en Los Ángeles y Zaragoza. -->
+          <p class="mt-4 flex items-center gap-3 font-mono text-xs text-niebla">
+            <span class="h-2 w-2 rounded-full bg-senal" aria-hidden="true"></span>
+            Los Ángeles · Zaragoza
+            <span class="h-2 w-2 rounded-full border border-senal" aria-hidden="true"></span>
+          </p>
+        </div>
+        <!-- Contacto: CONTEXT.md no da email, teléfono ni dirección; el canal de contacto es el formulario de solicitud. -->
+        <address class="not-italic">
+          <p class="font-mono text-xs uppercase tracking-[0.1em] text-niebla">Contacto</p>
+          <a class="mt-3 inline-flex min-h-11 items-center gap-2 font-semibold text-crema underline decoration-senal/60 underline-offset-[6px] hover:decoration-senal" href="/application.html">
+            Solicitar información <span aria-hidden="true">→</span>
+          </a>
+        </address>
+        <p class="font-mono text-xs text-niebla sm:col-span-2">© TrackFlow</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
