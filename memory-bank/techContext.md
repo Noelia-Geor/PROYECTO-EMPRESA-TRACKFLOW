@@ -51,6 +51,7 @@ Estos acuerdos forman parte de la solicitud de este hito y todavía no aparecen 
 | `elevada`    | `#162a34` | Superficies elevadas.                                 |
 | `crema`      | `#f3f1ec` | Texto principal sobre oscuro y panel claro destacado. |
 | `niebla`     | `#9aa7ac` | Texto secundario sobre oscuro.                        |
+| `error`      | `#ff8a94` | Mensajes y bordes de error en formularios.            |
 
 El naranja nunca se usa como color de texto sobre fondo blanco o `papel`; solo como fondo de botones con texto `tinta` o como acento sobre `marino`.
 
@@ -65,7 +66,23 @@ La identidad se aplica a `uis/website` y `uis/backoffice` como tokens de Tailwin
 - **Modo oscuro:** fondo `noche` en toda la página. El bloque «Tú vendes. Nosotros lo llevamos» es un panel `superficie` con borde sutil (antes era `crema`; se cambió el 07/10 para mantener toda la web en azul).
 - **Recurso visual propio:** punto → ruta → nodo → destino (`RouteMark`), usado en las etiquetas de sección, el recorrido del hero, las cifras, la red de transportistas, el mapa y el pie.
 - **Movimiento sutil y de una sola vez:** entrada de bloques al hacer scroll (`useReveal`), recorrido «Cómo trabajamos» fijado y guiado por el scroll, mapa real «Dónde estamos» (Natural Earth, generado una vez con d3-geo en `src/content/worldMap.ts`, sin dependencias en ejecución) que se queda fijo mientras un avión vuela de Los Ángeles a Zaragoza siguiendo el scroll. Sin partículas ni animaciones infinitas. Todo se desactiva con `prefers-reduced-motion`.
-- **Sin datos de contacto:** `CONTEXT.md` no aporta email, teléfono ni formulario, así que las llamadas a la acción llevan al recorrido y no a un contacto inventado.
+- **Sin datos de contacto:** `CONTEXT.md` no aporta email, teléfono ni dirección. Desde el 17/10 las llamadas a la acción llevan al formulario de solicitud (simulado).
+
+### Decisiones del hito landing + formulario (17/10)
+
+- **Multipágina con islas:** el enunciado exige `index.html`, `application.html` y `validation.js`. La landing y el formulario son HTML estático (Tailwind en las clases); React solo monta islas para el recorrido y el mapa, cargadas cuando se acercan a la pantalla. `validation.js` es JavaScript sin dependencias y exporta sus reglas para probarlas con `node --test`.
+- **Formulario simulado:** no hay backend; el envío valida en el navegador y muestra un éxito simulado que lo dice explícitamente. Sin política de privacidad, email, teléfono ni dirección inventados: el contacto del pie es el propio formulario.
+- **SEO sin dominio:** `CONTEXT.md` no da dominio. `canonical`, `og:url`, `og:image`, `sitemap.xml` y `url`/`logo` del JSON-LD solo se generan con una URL https en `SITE_URL` o deducida de `CODESPACE_NAME` (puerto 4173). Schema.org `Organization` (no `LocalBusiness`, que exige dirección).
+- **Recorrido «gemelo digital»:** mundo isométrico en SVG (sin WebGL ni Canvas), línea de tiempo pura de 12 escenas y un único bucle `requestAnimationFrame` que escribe atributos sin re-renderizar. Representa la operación actual de `CONTEXT.md`: picking con lista en papel, asignación de transportista por coordinadores, sin seguimiento en tiempo real ni asignación automática.
+- **Modos:** escritorio y tablet horizontal con cámara continua e inclinación 3D sutil; móvil y tablet vertical con 6 capítulos y cortes; guion gráfico estático con `prefers-reduced-motion`, modo ligero (ahorro de datos, poca memoria o CPU) o a petición.
+- **Nuevo token `error` (`#ff8a94`)** para los mensajes de validación, distinto del naranja `senal`.
+- **Menú hamburguesa hasta 1024 px:** la navegación con «Solicitar información» no cabe en una línea en tablet vertical.
+
+### Acabado visual premium (17/10)
+
+- **Hero:** foto del almacén desde el original de 3840 px (variantes hasta 3200 px en AVIF/WebP), etalonaje azul noche con luz cálida y velo solo detrás del texto. Las cifras pasan a un panel de cristal que monta sobre el borde del hero.
+- **Gemelo digital:** una sola dirección de luz y sombra para nave, muelle y calle; pantallas lineales con conos de luz en la nave, farolas y ventanas encendidas fuera; aristas superiores iluminadas; cajas con precinto y etiqueta, cubetas, palets con tacos, retractilado, etiquetas de ubicación en los largueros, rótulo de la marca en la pared y nombres de zona pintados en el suelo; camión con faros, pilotos y brillo lateral; halo naranja en el paquete.
+- **Rendimiento:** sin `vector-effect` en los polígonos (era el mayor coste por fotograma) y descarte por objeto de lo que queda fuera del encuadre.
 
 ### Decisiones del backoffice (07/10)
 
